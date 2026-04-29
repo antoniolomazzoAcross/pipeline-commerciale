@@ -153,6 +153,8 @@ table.mt tbody tr.even{background:var(--row-even)}
 table.mt tbody tr.odd{background:var(--row-odd)}
 table.mt tbody tr:hover{background:var(--row-hover)!important}
 table.mt tbody tr.prospect-start{border-top:2px solid var(--b2)}
+table.mt td[rowspan]{border-right:1px solid var(--b1)}
+table.mt tbody tr:last-child td{border-bottom:none}
 table.mt tbody tr.prospect-start:first-child{border-top:none}
 table.mt td{padding:.6rem .75rem;white-space:nowrap;max-width:160px;overflow:hidden;text-overflow:ellipsis}
 table.mt td.num{text-align:right;font-variant-numeric:tabular-nums}
@@ -939,85 +941,107 @@ function setSort(k){if(sortF===k)sortD*=-1;else{sortF=k;sortD=1}renderTable()}
 
 function renderTable(){
   const filtered=getFiltered();
-  const expanded=expandRows(filtered);
 
-  // Totali sui prospect filtrati (non sulle righe espanse)
+  // Totali globali
   const totB=filtered.reduce((s,d)=>s+recTotals(d).budget,0);
   const totF=filtered.reduce((s,d)=>s+recTotals(d).fee,0);
   const totV=filtered.reduce((s,d)=>s+recTotals(d).valore,0);
 
-  const ths1=COLS.map(c=>`<th class="${sortF===c.k?(sortD===1?'sa':'sd'):''}" style="min-width:${c.w}" onclick="setSort('${c.k}')">${c.l}</th>`).join('')+'<th>Azioni</th>';
-  const ths2=COLS.map(c=>{
-    const cur=colFilters[c.k]||'';
-    if(c.f==='text')return`<th><input type="text" placeholder="filtra…" value="${cur}" oninput="onColFilter('${c.k}',this.value)"></th>`;
-    if(c.f==='select')return`<th><select onchange="onColFilter('${c.k}',this.value)"><option value="">—</option>${c.opts.map(o=>`<option ${o===cur?'selected':''}>${o}</option>`).join('')}</select></th>`;
+  // Header riga 1 — etichette + sort
+  // Colonne: [prospect-sx] | [canale] [budget] [fee] [totriga] [statocanale] | [prospect-dx] | [TOT.PREV] | [azioni]
+  const PCOLS_L = ['settimana','commerciale','dataUscita','prospect','verticale','fonte'];
+  const CCOLS   = ['_canale','_budget','_fee','_totriga','_statocanale'];
+  const PCOLS_R = ['pctSuccesso','stato','feedback','dataAccettazione','dataUltimoFeedback','timing','noteVarie'];
+
+  const allColsOrdered = [...PCOLS_L,...CCOLS,...PCOLS_R,'_totprev'];
+  const colMap = {};
+  COLS.forEach(c=>colMap[c.k]=c);
+
+  const thLabel = (k,extra='')=>{
+    const c=colMap[k];if(!c&&k!=='_totprev')return'';
+    const label=k==='_totprev'?'Tot. Preventivo':(c?.l||k);
+    const cls=sortF===k?(sortD===1?'sa':'sd'):'';
+    const click=k==='_totprev'?`onclick="setSort('_totprev')"`:`onclick="setSort('${k}')"`;
+    const w=k==='_totprev'?'105px':(c?.w||'90px');
+    return`<th class="${cls}" style="min-width:${w}" ${click} ${extra}>${label}</th>`;
+  };
+  const ths1 = allColsOrdered.map(k=>thLabel(k)).join('')+'<th>Azioni</th>';
+
+  // Header riga 2 — filtri
+  const thFilter = (k)=>{
+    const c=colMap[k];
+    if(!c||k==='_totprev'){return'<th class="no-filter"></th>'}
+    const cur=colFilters[k]||'';
+    if(c.f==='text')return`<th><input type="text" placeholder="filtra…" value="${cur}" oninput="onColFilter('${k}',this.value)"></th>`;
+    if(c.f==='select')return`<th><select onchange="onColFilter('${k}',this.value)"><option value="">—</option>${c.opts.map(o=>`<option ${o===cur?'selected':''}>${o}</option>`).join('')}</select></th>`;
     return'<th class="no-filter"></th>';
-  }).join('')+'<th class="no-filter"></th>';
+  };
+  const ths2 = allColsOrdered.map(k=>thFilter(k)).join('')+'<th class="no-filter"></th>';
 
-  let prevProspectIdx=-1;
+  // Body — rowspan per colonne prospect
   let rowColorIdx=0;
+  const trs = filtered.length ? filtered.map((d,pi)=>{
+    rowColorIdx++;
+    const rowCls = rowColorIdx%2===0?'even':'odd';
+    const righe = d.righe&&d.righe.length ? d.righe : [{}];
+    const n = righe.length; // rowspan count
+    const {budget:totPrevB, fee:totPrevF, valore:totPrevV} = recTotals(d);
 
-  const trs=expanded.length?expanded.map(({d,r,isFirst,righeCount,prospectIdx})=>{
-    // Change color group per prospect
-    if(prospectIdx!==prevProspectIdx){rowColorIdx++;prevProspectIdx=prospectIdx}
-    const rowClass=(rowColorIdx%2===0?'even':'odd')+(isFirst&&prospectIdx>0?' prospect-start':'');
-    const empty='<td></td>';
-    const dim=(v)=>`<td class="merged" style="color:var(--dim)">${v}</td>`;
+    return righe.map((r,ri)=>{
+      const isFirst = ri===0;
+      const sep = isFirst&&pi>0?' prospect-start':'';
 
-    // Per-channel data
-    const canale=r?.canale||'—';
-    const rBudget=num(r?.budget);
-    const rFee=num(r?.fee)+num(r?.setup||0);
-    const rTot=rBudget+rFee;
-    const rStato=r?.statoCanale||'In Attesa';
+      // Colonne prospect — solo prima riga, con rowspan
+      const prospectLCells = isFirst ? [
+        `<td rowspan="${n}" style="vertical-align:middle">${d.settimana||'—'}</td>`,
+        `<td rowspan="${n}" style="vertical-align:middle">${d.commerciale||'—'}</td>`,
+        `<td rowspan="${n}" style="vertical-align:middle">${fmtDate(d.dataUscita)}</td>`,
+        `<td rowspan="${n}" style="vertical-align:middle;font-weight:700">${d.prospect||'—'}</td>`,
+        `<td rowspan="${n}" style="vertical-align:middle">${d.verticale||'—'}</td>`,
+        `<td rowspan="${n}" style="vertical-align:middle">${d.fonte||'—'}</td>`,
+      ].join('') : '';
 
-    // Prospect-level data (only on first row)
-    const prospectCells=isFirst?[
-      `<td>${d.settimana||'—'}</td>`,
-      `<td>${d.commerciale||'—'}</td>`,
-      `<td>${fmtDate(d.dataUscita)}</td>`,
-      `<td title="${d.prospect||''}" style="font-weight:600">${d.prospect||'—'}</td>`,
-      `<td>${d.verticale||'—'}</td>`,
-      `<td>${d.fonte||'—'}</td>`,
-    ]:[
-      empty,empty,empty,
-      dim(d.prospect||'—'),
-      empty,empty,
-    ];
+      // Colonne canale — ogni riga
+      const rBudget=num(r?.budget);
+      const rFee=num(r?.fee)+num(r?.setup||0);
+      const rTot=rBudget+rFee;
+      const rStato=r?.statoCanale||'In Attesa';
+      const channelCells = [
+        `<td style="font-weight:500">${r?.canale||'—'}</td>`,
+        `<td class="num">${eur(rBudget)}</td>`,
+        `<td class="num">${eur(rFee)}</td>`,
+        `<td class="num" style="font-weight:600;color:var(--gold2)">${eur(rTot)}</td>`,
+        `<td><span style="${statoCanaleColor(rStato)};font-size:.78rem">${rStato}</span></td>`,
+      ].join('');
 
-    const channelCells=[
-      `<td style="font-weight:500">${canale}</td>`,
-      `<td class="num">${eur(rBudget)}</td>`,
-      `<td class="num">${eur(rFee)}</td>`,
-      `<td class="num" style="font-weight:600;color:var(--gold2)">${eur(rTot)}</td>`,
-      `<td><span style="${statoCanaleColor(rStato)};font-size:.78rem">${rStato}</span></td>`,
-    ];
+      // Colonne prospect destra + totale preventivo — solo prima riga, rowspan
+      const prospectRCells = isFirst ? [
+        `<td rowspan="${n}" style="vertical-align:middle">${d.pctSuccesso!==undefined&&d.pctSuccesso!==''?`<div class="pct-w"><span style="font-size:.76rem">${d.pctSuccesso}%</span><div class="pct-bar"><div class="pct-fill" style="width:${d.pctSuccesso}%"></div></div></div>`:'—'}</td>`,
+        `<td rowspan="${n}" style="vertical-align:middle"><span class="${badgeCls(d.stato)}">${d.stato||'In Attesa'}</span></td>`,
+        `<td rowspan="${n}" style="vertical-align:middle">${feedbackBadge(d.feedback)}</td>`,
+        `<td rowspan="${n}" style="vertical-align:middle">${fmtDate(d.dataAccettazione)}</td>`,
+        `<td rowspan="${n}" style="vertical-align:middle">${fmtDate(d.dataUltimoFeedback)}</td>`,
+        `<td rowspan="${n}" style="vertical-align:middle">${d.timing||'—'}</td>`,
+        `<td rowspan="${n}" style="vertical-align:middle;max-width:140px;overflow:hidden;text-overflow:ellipsis" title="${d.noteVarie||''}">${d.noteVarie?d.noteVarie.slice(0,25)+(d.noteVarie.length>25?'…':''):'—'}</td>`,
+        // Totale preventivo — grande, centrato
+        `<td rowspan="${n}" style="vertical-align:middle;text-align:center;font-family:var(--display);font-size:1rem;font-weight:800;color:var(--gold2);background:rgba(160,104,8,.06);border-left:2px solid var(--b2)">${eur(totPrevV)}</td>`,
+      ].join('') : '';
 
-    const trailingCells=isFirst?[
-      `<td>${d.pctSuccesso!==undefined&&d.pctSuccesso!==''?`<div class="pct-w"><span style="font-size:.76rem">${d.pctSuccesso}%</span><div class="pct-bar"><div class="pct-fill" style="width:${d.pctSuccesso}%"></div></div></div>`:'—'}</td>`,
-      `<td><span class="${badgeCls(d.stato)}">${d.stato||'In Attesa'}</span></td>`,
-      `<td>${feedbackBadge(d.feedback)}</td>`,
-      `<td>${fmtDate(d.dataAccettazione)}</td>`,
-      `<td>${fmtDate(d.dataUltimoFeedback)}</td>`,
-      `<td>${d.timing||'—'}</td>`,
-      `<td title="${d.noteVarie||''}">${d.noteVarie?d.noteVarie.slice(0,25)+(d.noteVarie.length>25?'…':''):'—'}</td>`,
-    ]:[
-      empty,empty,empty,empty,empty,empty,empty
-    ];
+      const actionCell = isFirst
+        ? `<td rowspan="${n}" style="vertical-align:middle;white-space:nowrap" onclick="event.stopPropagation()"><button class="btn btn-ghost btn-sm" onclick="editQ('${d.id}')">✏️</button><button class="btn btn-danger btn-sm" onclick="deleteRecord('${d.id}')">🗑</button></td>`
+        : '';
 
-    const actionCell=isFirst
-      ?`<td class="act" onclick="event.stopPropagation()"><button class="btn btn-ghost btn-sm" onclick="editQ('${d.id}')">✏️</button><button class="btn btn-danger btn-sm" onclick="deleteRecord('${d.id}')">🗑</button></td>`
-      :empty;
-
-    return`<tr class="${rowClass}" onclick="openDetail('${d.id}')">${prospectCells.join('')}${channelCells.join('')}${trailingCells.join('')}${actionCell}</tr>`;
+      return `<tr class="${rowCls}${sep}" onclick="openDetail('${d.id}')">${prospectLCells}${channelCells}${prospectRCells}${actionCell}</tr>`;
+    }).join('');
   }).join('')
-  :`<tr><td colspan="${COLS.length+1}"><div class="empty"><div class="empty-ico">📭</div>Nessuna trattativa trovata.</div></td></tr>`;
+  : `<tr><td colspan="${allColsOrdered.length+1}"><div class="empty"><div class="empty-ico">📭</div>Nessuna trattativa trovata.</div></td></tr>`;
 
-  const footCells=COLS.map((c,i)=>{
-    if(c.k==='_budget')return`<td class="foot-num">${eur(totB)}</td>`;
-    if(c.k==='_fee')return`<td class="foot-num">${eur(totF)}</td>`;
-    if(c.k==='_totriga')return`<td class="foot-num" style="color:var(--gold2)">${eur(totV)}</td>`;
-    if(i===0)return`<td class="foot-lbl">Totali · ${filtered.length} prospect</td>`;
+  // Footer
+  const footCells = allColsOrdered.map((k,i)=>{
+    if(k==='_budget')  return`<td class="foot-num">${eur(totB)}</td>`;
+    if(k==='_fee')     return`<td class="foot-num">${eur(totF)}</td>`;
+    if(k==='_totprev') return`<td class="foot-num" style="color:var(--gold2);font-size:.95rem;background:rgba(160,104,8,.06)">${eur(totV)}</td>`;
+    if(i===0)          return`<td class="foot-lbl">Totali · ${filtered.length} prospect</td>`;
     return'<td></td>';
   }).join('')+'<td></td>';
 
