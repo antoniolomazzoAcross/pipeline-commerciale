@@ -885,7 +885,6 @@ const COLS=[
   {k:'dataUltimoFeedback',l:'Ult.Feedback',f:'text',w:'82px'},
   {k:'timing',l:'Timing',f:'text',w:'85px'},
   {k:'noteVarie',l:'Note',f:'text',w:'120px'},
-  {k:'settimana',l:'Sett.',f:'text',w:'68px'},
 ];
 
 // Espandi i dati: una riga per canale, con dati prospect solo sulla prima riga
@@ -963,9 +962,9 @@ function renderTable(){
 
   // Header riga 1 — etichette + sort
   // Colonne: [prospect-sx] | [canale] [budget] [fee] [totriga] [statocanale] | [prospect-dx] | [TOT.PREV] | [azioni]
-  const PCOLS_L = ['settimana','commerciale','dataUscita','prospect','verticale','fonte'];
+  const PCOLS_L = ['commerciale','dataUscita','prospect','verticale','fonte'];
   const CCOLS   = ['_canale','_budget','_fee','_totriga','_statocanale'];
-  const PCOLS_R = ['pctSuccesso','stato','feedback','dataAccettazione','dataUltimoFeedback','timing','noteVarie'];
+  const PCOLS_R = ['pctSuccesso','stato','feedback','dataAccettazione','dataUltimoFeedback','timing','noteVarie','settimana'];
 
   const CCOLS_WITH_TOT = [...CCOLS,'_totprev'];
   const allColsOrdered = [...PCOLS_L,...CCOLS_WITH_TOT,...PCOLS_R];
@@ -1050,7 +1049,7 @@ function renderTable(){
         `<td class="num" style="font-weight:600;color:var(--gold2)">${eur(rTot)}</td>`,
         `<td><span style="${statoCanaleColor(rStato)};font-size:.78rem">${rStato}</span></td>`,
         // Totale preventivo — dopo stato canale, solo prima riga con rowspan
-        isFirst ? `<td rowspan="${n}" style="vertical-align:middle;text-align:right;font-family:var(--display);font-size:.92rem;font-weight:800;color:var(--gold2);background:rgba(160,104,8,.06);border-left:2px solid rgba(160,104,8,.2);padding:.6rem .75rem;white-space:nowrap">${eur(totPrevV)}</td>` : '',
+        isFirst ? `<td rowspan="${n}" style="vertical-align:middle;text-align:right;font-size:.81rem;font-weight:700;color:var(--gold2);background:rgba(160,104,8,.06);border-left:2px solid rgba(160,104,8,.2);padding:.6rem .75rem;white-space:nowrap">${eur(totPrevV)}</td>` : '',
       ].join('');
 
       // Colonne prospect destra — solo prima riga, rowspan
@@ -1062,6 +1061,7 @@ function renderTable(){
         `<td rowspan="${n}" style="vertical-align:middle">${fmtDate(d.dataUltimoFeedback)}</td>`,
         `<td rowspan="${n}" style="vertical-align:middle">${d.timing||'—'}</td>`,
         `<td rowspan="${n}" style="vertical-align:middle;max-width:140px;overflow:hidden;text-overflow:ellipsis" title="${d.noteVarie||''}">${d.noteVarie?d.noteVarie.slice(0,25)+(d.noteVarie.length>25?'…':''):'—'}</td>`,
+        `<td rowspan="${n}" style="vertical-align:middle;color:var(--muted);font-size:.78rem">${d.settimana||'—'}</td>`,
       ].join('') : '';
 
       const actionCell = isFirst
