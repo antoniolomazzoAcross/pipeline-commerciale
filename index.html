@@ -288,6 +288,18 @@ table.q-tbl tr.tot-row td{background:var(--s2);font-weight:700;color:var(--gold2
 .m-righe-table .tot-col{color:var(--gold2);font-weight:700}
 
 /* ── TOAST ──────────────────────────── */
+/* TOOLTIP */
+.tip{
+  position:fixed;z-index:9999;background:var(--text);color:var(--s1);
+  font-size:.78rem;line-height:1.5;padding:.5rem .85rem;border-radius:7px;
+  max-width:320px;white-space:pre-wrap;word-break:break-word;
+  pointer-events:none;opacity:0;transition:opacity .15s;
+  box-shadow:0 4px 16px rgba(0,0,0,.18);
+}
+.tip.show{opacity:1}
+.tip-breakdown{font-size:.76rem;line-height:1.6}
+.tip-breakdown b{color:var(--gold2)}
+
 .toast{position:fixed;bottom:1.8rem;right:1.8rem;background:var(--s1);border:1px solid var(--b1);border-radius:var(--r);padding:.85rem 1.3rem;font-size:.82rem;z-index:2000;animation:toastIn .28s ease;max-width:300px;box-shadow:0 4px 18px rgba(0,0,0,.12)}
 .toast.ok{border-left:3px solid var(--teal)}.toast.err{border-left:3px solid var(--rose)}
 @keyframes toastIn{from{transform:translateY(.8rem);opacity:0}to{transform:translateY(0);opacity:1}}
@@ -554,6 +566,9 @@ table.q-tbl tr.tot-row td{background:var(--s2);font-weight:700;color:var(--gold2
   </main>
 </div>
 
+<!-- TOOLTIP -->
+<div id="tip" class="tip"></div>
+
 <!-- MODAL DETTAGLIO -->
 <div id="det-overlay" class="overlay hidden" onclick="closeOverlay(event)">
   <div class="modal">
@@ -622,6 +637,40 @@ function recTotals(d){
   const fee=r.reduce((s,x)=>s+num(x.fee)+num(x.setup||0),0)||num(d.feeN)||0;
   return{budget,fee,valore:budget+fee};
 }
+// ── TOOLTIP ──────────────────────────────────────────
+const tipEl=()=>document.getElementById('tip');
+function showTip(e,html){
+  const t=tipEl();if(!t)return;
+  t.innerHTML=html;t.classList.add('show');
+  moveTip(e);
+}
+function moveTip(e){
+  const t=tipEl();if(!t)return;
+  const x=e.clientX+14, y=e.clientY-10;
+  const w=t.offsetWidth, h=t.offsetHeight;
+  t.style.left=(x+w>window.innerWidth?x-w-20:x)+'px';
+  t.style.top=(y+h>window.innerHeight?y-h-8:y)+'px';
+}
+function hideTip(){const t=tipEl();if(t)t.classList.remove('show')}
+document.addEventListener('mousemove',e=>{if(tipEl()?.classList.contains('show'))moveTip(e)});
+
+function makeBreakdownTip(righe){
+  if(!righe||!righe.length)return null;
+  const lines=righe.map(r=>{
+    const b=num(r.budget),f=num(r.fee),s=num(r.setup||0);
+    const tot=b+f+s;
+    if(!r.canale&&!b&&!f&&!s)return null;
+    let desc=`<b>${r.canale||'—'}</b>`;
+    if(r.qty&&r.prezzo) desc+=` — ${fmtN(r.qty)} × €${fmtN(r.prezzo)} ${r.tipoPay||''}`;
+    if(b>0) desc+=`\n  Budget: <b>€${fmtN(b)}</b>`;
+    if(f>0) desc+=`\n  Fee: <b>€${fmtN(f)}</b>`;
+    if(s>0) desc+=`\n  Setup: <b>€${fmtN(s)}</b>`;
+    if(tot>0) desc+=`\n  Totale riga: <b>€${fmtN(tot)}</b>`;
+    return desc;
+  }).filter(Boolean);
+  return lines.length?'<div class="tip-breakdown">'+lines.join('<hr style="border:none;border-top:1px solid rgba(255,255,255,.15);margin:.35rem 0">')+'</div>':null;
+}
+
 function toast(msg,type='ok'){const t=document.createElement('div');t.className='toast '+(type==='ok'?'ok':'err');t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),4000)}
 
 // ══════════════════════════════════════════════════
@@ -1036,7 +1085,7 @@ function renderTable(){
       const prospectLCells = isFirst ? [
         `<td rowspan="${n}" style="vertical-align:middle">${d.commerciale||'—'}</td>`,
         `<td rowspan="${n}" style="vertical-align:middle">${fmtDate(d.dataUscita)}</td>`,
-        `<td rowspan="${n}" style="vertical-align:middle;font-weight:700">${d.prospect||'—'}</td>`,
+        `<td rowspan="${n}" style="vertical-align:middle;font-weight:700;cursor:pointer" onmouseenter="showTip(event,${JSON.stringify(d.prospect||'')})" onmouseleave="hideTip()">${d.prospect||'—'}</td>`,
         `<td rowspan="${n}" style="vertical-align:middle">${d.verticale||'—'}</td>`,
         `<td rowspan="${n}" style="vertical-align:middle">${d.fonte||'—'}</td>`,
       ].join('') : '';
@@ -1046,10 +1095,13 @@ function renderTable(){
       const rFee=num(r?.fee)+num(r?.setup||0);
       const rTot=rBudget+rFee;
       const rStato=r?.statoCanale||'In Attesa';
+      // Breakdown tooltip for budget/fee cells
+      const bdTip = makeBreakdownTip(d.righe?.filter(x=>x.canale===r?.canale));
+      const bdAttr = bdTip ? `onmouseenter="showTip(event,${JSON.stringify(bdTip).replace(/'/g,'\'').replace(/"/g,'&quot;')})" onmouseleave="hideTip()"` : '';
       const channelCells = [
         `<td style="font-weight:500">${r?.canale||'—'}</td>`,
-        `<td class="num">${eur(rBudget)}</td>`,
-        `<td class="num">${eur(rFee)}</td>`,
+        `<td class="num" ${bdAttr} style="cursor:${bdTip?'help':'default'}">${eur(rBudget)}</td>`,
+        `<td class="num" ${bdAttr} style="cursor:${bdTip?'help':'default'}">${eur(rFee)}</td>`,
         `<td class="num" style="font-weight:600;color:var(--gold2)">${eur(rTot)}</td>`,
         `<td><span style="${statoCanaleColor(rStato)};font-size:.78rem">${rStato}</span></td>`,
         // Totale preventivo — dopo stato canale, solo prima riga con rowspan
@@ -1064,7 +1116,7 @@ function renderTable(){
         `<td rowspan="${n}" style="vertical-align:middle">${fmtDate(d.dataAccettazione)}</td>`,
         `<td rowspan="${n}" style="vertical-align:middle">${fmtDate(d.dataUltimoFeedback)}</td>`,
         `<td rowspan="${n}" style="vertical-align:middle">${d.timing||'—'}</td>`,
-        `<td rowspan="${n}" style="vertical-align:middle;max-width:140px;overflow:hidden;text-overflow:ellipsis" title="${d.noteVarie||''}">${d.noteVarie?d.noteVarie.slice(0,25)+(d.noteVarie.length>25?'…':''):'—'}</td>`,
+        `<td rowspan="${n}" style="vertical-align:middle;max-width:140px;overflow:hidden;text-overflow:ellipsis;cursor:${d.noteVarie?'help':'default'}" onmouseenter="showTip(event,${JSON.stringify(d.noteVarie||'').replace(/"/g,'&quot;')}||'Nessuna nota')" onmouseleave="hideTip()">${d.noteVarie?d.noteVarie.slice(0,25)+(d.noteVarie.length>25?'…':''):'—'}</td>`,
         `<td rowspan="${n}" style="vertical-align:middle;color:var(--muted);font-size:.78rem">${d.settimana||'—'}</td>`,
       ].join('') : '';
 
@@ -1108,79 +1160,165 @@ function getPreventiviFiltrati(){
   });
 }
 function getAllRighe(preventivi){const out=[];preventivi.forEach(d=>(d.righe||[]).forEach(r=>out.push({...r,_prev:d})));return out}
-function aggByCanale(righe){
+function aggByCanale(preventivi){
+  // Per ogni canale: somma valori + conta PROSPECT unici (non righe)
   const m={};
-  righe.forEach(r=>{
-    const k=r.canale||'—';
-    if(!m[k])m[k]={budget:0,fee:0,count:0,countBudget:0,countFee:0};
-    const b=num(r.budget), f=num(r.fee)+num(r.setup||0);
-    m[k].budget+=b;
-    m[k].fee+=f;
-    m[k].count++;
-    if(b>0) m[k].countBudget++;
-    if(f>0) m[k].countFee++;
+  preventivi.forEach(d=>{
+    if(!d.righe||!d.righe.length) return;
+    // Aggrega per canale dentro questo prospect
+    const byCanaleInPreventivo={};
+    d.righe.forEach(r=>{
+      const k=r.canale||'—';
+      if(!byCanaleInPreventivo[k])byCanaleInPreventivo[k]={budget:0,fee:0};
+      byCanaleInPreventivo[k].budget+=num(r.budget);
+      byCanaleInPreventivo[k].fee+=num(r.fee)+num(r.setup||0);
+    });
+    // Aggiungi al totale globale
+    Object.entries(byCanaleInPreventivo).forEach(([k,v])=>{
+      if(!m[k])m[k]={budget:0,fee:0,prospects:0};
+      m[k].budget+=v.budget;
+      m[k].fee+=v.fee;
+      // Conta il prospect solo se ha valore per questo canale
+      if(v.budget>0||v.fee>0) m[k].prospects++;
+    });
   });
   return m;
 }
+function repSection(prevInAttesa, prevAcquisiti, catCanali, showFeeOnly){
+  // Calcola aggregato per In Attesa e Acquisiti separatamente
+  const aggA = aggByCanale(prevInAttesa);
+  const aggC = aggByCanale(prevAcquisiti);
+
+  // Filtra solo i canali della categoria
+  const rowsA = catCanali.flatMap(c=>aggA[c]?[{canale:c,...aggA[c]}]:[]);
+  const rowsC = catCanali.flatMap(c=>aggC[c]?[{canale:c,...aggC[c]}]:[]);
+
+  const mkTable = (rows, label, color) => {
+    if(!rows.length) return `<div style="padding:.6rem 1.2rem;font-size:.8rem;color:var(--muted)">Nessun dato ${label.toLowerCase()}</div>`;
+    const ths = showFeeOnly
+      ? `<th>${label}</th><th class="num">Fee+Setup €</th><th class="num" title="Numero di prospect con questo canale">N° Prospect</th>`
+      : `<th>${label}</th><th class="num">Budget €</th><th class="num">Fee+Setup €</th><th class="num">Totale €</th><th class="num" title="Numero di prospect con questo canale">N° Prospect</th>`;
+    const trs = rows.map(r=>{
+      const cnt = r.prospects||0;
+      return showFeeOnly
+        ?`<tr><td><strong>${r.canale}</strong></td><td class="num">${eur(r.fee)}</td><td class="num">${cnt||'—'}</td></tr>`
+        :`<tr><td><strong>${r.canale}</strong></td><td class="num">${eur(r.budget)}</td><td class="num">${eur(r.fee)}</td><td class="num">${eur(r.budget+r.fee)}</td><td class="num">${cnt||'—'}</td></tr>`;
+    }).join('');
+    const totB=rows.reduce((s,r)=>s+r.budget,0);
+    const totF=rows.reduce((s,r)=>s+r.fee,0);
+    const totN=rows.reduce((s,r)=>s+(r.prospects||0),0);
+    const totRow = showFeeOnly
+      ?`<tr class="tot-row" style="border-top:2px solid ${color}"><td>Totale ${label}</td><td class="num">${eur(totF)}</td><td class="num">${totN||'—'}</td></tr>`
+      :`<tr class="tot-row" style="border-top:2px solid ${color}"><td>Totale ${label}</td><td class="num">${eur(totB)}</td><td class="num">${eur(totF)}</td><td class="num">${eur(totB+totF)}</td><td class="num">${totN||'—'}</td></tr>`;
+    return`<table class="rep-tbl"><thead><tr>${ths}</tr></thead><tbody>${trs}${totRow}</tbody></table>`;
+  };
+
+  return mkTable(rowsA,'In Attesa','#C08010') + mkTable(rowsC,'Acquisiti','#0D7A70');
+}
+
+// Legacy single-table version kept for N4S summary card
 function repTable(rows,showFeeOnly=false){
-  if(!rows.length)return'<div style="padding:.9rem 1.2rem;color:var(--muted);font-size:.82rem">Nessun dato per il periodo selezionato.</div>';
-  const ths=showFeeOnly
-    ?'<th>Canale</th><th class="num">Fee+Setup €</th><th class="num">N° preventivi con valore</th>'
-    :'<th>Canale</th><th class="num">Budget Piattaforma €</th><th class="num">Fee+Setup €</th><th class="num">Totale €</th><th class="num">N° preventivi con valore</th>';
-  const trs=rows.map(r=>{
-    // Use countFee for fee-only sections, countBudget for platform sections
-    const cnt = showFeeOnly ? (r.countFee||0) : (r.countBudget||0);
-    return showFeeOnly
-      ?`<tr><td><strong>${r.canale}</strong></td><td class="num">${eur(r.fee)}</td><td class="num" style="color:${cnt>0?'var(--text)':'var(--muted)'}">${cnt>0?cnt:'—'}</td></tr>`
-      :`<tr><td><strong>${r.canale}</strong></td><td class="num">${eur(r.budget)}</td><td class="num">${eur(r.fee)}</td><td class="num">${eur(r.budget+r.fee)}</td><td class="num" style="color:${cnt>0?'var(--text)':'var(--muted)'}">${cnt>0?cnt:'—'}</td></tr>`;
-  }).join('');
-  const totB=rows.reduce((s,r)=>s+r.budget,0);
-  const totF=rows.reduce((s,r)=>s+r.fee,0);
-  const totN=showFeeOnly
-    ?rows.reduce((s,r)=>s+(r.countFee||0),0)
-    :rows.reduce((s,r)=>s+(r.countBudget||0),0);
-  const totRow=showFeeOnly
-    ?`<tr class="tot-row"><td>Totale</td><td class="num">${eur(totF)}</td><td class="num">${totN||'—'}</td></tr>`
-    :`<tr class="tot-row"><td>Totale</td><td class="num">${eur(totB)}</td><td class="num">${eur(totF)}</td><td class="num">${eur(totB+totF)}</td><td class="num">${totN||'—'}</td></tr>`;
+  if(!rows.length)return'<div style="padding:.9rem 1.2rem;color:var(--muted);font-size:.82rem">Nessun dato.</div>';
+  const ths=showFeeOnly?'<th>Canale</th><th class="num">Fee+Setup €</th><th class="num">N° Prospect</th>':'<th>Canale</th><th class="num">Budget €</th><th class="num">Fee+Setup €</th><th class="num">Totale €</th><th class="num">N° Prospect</th>';
+  const trs=rows.map(r=>`<tr><td><strong>${r.canale}</strong></td>${showFeeOnly?`<td class="num">${eur(r.fee)}</td>`:`<td class="num">${eur(r.budget)}</td><td class="num">${eur(r.fee)}</td><td class="num">${eur(r.budget+r.fee)}</td>`}<td class="num">${r.prospects||'—'}</td></tr>`).join('');
+  const totB=rows.reduce((s,r)=>s+r.budget,0),totF=rows.reduce((s,r)=>s+r.fee,0),totN=rows.reduce((s,r)=>s+(r.prospects||0),0);
+  const totRow=showFeeOnly?`<tr class="tot-row"><td>Totale</td><td class="num">${eur(totF)}</td><td class="num">${totN}</td></tr>`:`<tr class="tot-row"><td>Totale</td><td class="num">${eur(totB)}</td><td class="num">${eur(totF)}</td><td class="num">${eur(totB+totF)}</td><td class="num">${totN}</td></tr>`;
   return`<table class="rep-tbl"><thead><tr>${ths}</tr></thead><tbody>${trs}${totRow}</tbody></table>`;
 }
 function renderReport(){
   const preventivi=getPreventiviFiltrati();
-  const allRighe=getAllRighe(preventivi);
-  const byCanale=aggByCanale(allRighe);
+  const prevAttesa  = preventivi.filter(d=>d.stato==='In Attesa');
+  const prevAcquisi = preventivi.filter(d=>d.stato==='Acquisito');
+  const prevPersi   = preventivi.filter(d=>d.stato==='Perso');
+
   const anno=el('r-anno').value,mese=el('r-mese').value,comm=el('r-comm').value;
   const periodoLabel=[comm,mese?MESI_NUM[parseInt(mese)]:'',anno].filter(Boolean).join(' · ')||'Tutto il periodo';
-  const n4sRighe=CAT_N4S.flatMap(c=>byCanale[c]?[{canale:c,...byCanale[c]}]:[]);
-  const platRighe=CAT_PLATFORM.flatMap(c=>byCanale[c]?[{canale:c,...byCanale[c]}]:[]);
-  const otherRighe=CAT_OTHER.flatMap(c=>byCanale[c]?[{canale:c,...byCanale[c]}]:[]);
+
+  const aggAtt=aggByCanale(prevAttesa), aggAcq=aggByCanale(prevAcquisi);
   const allCat=[...CAT_N4S,...CAT_PLATFORM,...CAT_OTHER];
-  const uncat=Object.entries(byCanale).filter(([c])=>!allCat.includes(c)&&c!=='—').map(([canale,v])=>({canale,...v}));
-  const n4sB=n4sRighe.reduce((s,r)=>s+r.budget,0),n4sF=n4sRighe.reduce((s,r)=>s+r.fee,0);
-  const platB=platRighe.reduce((s,r)=>s+r.budget,0),platF=platRighe.reduce((s,r)=>s+r.fee,0);
-  const otherF=otherRighe.reduce((s,r)=>s+r.fee,0);
-  const grandB=allRighe.reduce((s,r)=>s+num(r.budget),0);
-  const grandF=allRighe.reduce((s,r)=>s+num(r.fee)+num(r.setup||0),0);
+  const uncatKeys=Object.keys(aggByCanale(preventivi)).filter(c=>!allCat.includes(c)&&c!=='—');
+
+  const sumCat=(agg,cats)=>cats.reduce((s,c)=>({budget:s.budget+(agg[c]?.budget||0),fee:s.fee+(agg[c]?.fee||0)}),{budget:0,fee:0});
+
+  const n4sAtt=sumCat(aggAtt,CAT_N4S), n4sAcq=sumCat(aggAcq,CAT_N4S);
+  const platAtt=sumCat(aggAtt,CAT_PLATFORM), platAcq=sumCat(aggAcq,CAT_PLATFORM);
+  const othAtt=sumCat(aggAtt,CAT_OTHER), othAcq=sumCat(aggAcq,CAT_OTHER);
+
+  const grandAtt=prevAttesa.reduce((s,d)=>{const t=recTotals(d);return{b:s.b+t.budget,f:s.f+t.fee}},{b:0,f:0});
+  const grandAcq=prevAcquisi.reduce((s,d)=>{const t=recTotals(d);return{b:s.b+t.budget,f:s.f+t.fee}},{b:0,f:0});
+
+  const kpi=(lbl,val)=>`<div><div style="font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">${lbl}</div><div style="font-size:.95rem;font-weight:700">${eur(val)}</div></div>`;
+  const kpiTot=(lbl,val,col)=>`<div style="border-left:2px solid ${col}40;padding-left:1rem"><div style="font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">${lbl}</div><div style="font-size:1.05rem;font-weight:800;color:${col}">${eur(val)}</div></div>`;
+
   el('report-body').innerHTML=`
-    <div style="font-size:.79rem;color:var(--muted);margin-bottom:.85rem">Periodo: <strong style="color:var(--text)">${periodoLabel}</strong> · ${preventivi.length} preventivi</div>
-    <div class="report-section"><div class="rs-header"><span class="rs-icon">🎯</span><span class="rs-label">N4S</span><span class="rs-desc">${n4sRighe.reduce((s,r)=>s+r.count,0)} righe · ${eur(n4sB+n4sF)}</span></div>${n4sRighe.length?`<div style="display:flex;gap:2rem;padding:.85rem 1.2rem;background:var(--s2)"><div style="font-size:.8rem"><span style="color:var(--muted)">Budget </span><strong style="color:var(--gold2)">${eur(n4sB)}</strong></div><div style="font-size:.8rem"><span style="color:var(--muted)">Fee </span><strong style="color:var(--gold2)">${eur(n4sF)}</strong></div><div style="font-size:.8rem"><span style="color:var(--muted)">Totale </span><strong style="color:var(--gold2)">${eur(n4sB+n4sF)}</strong></div></div>`:'<div style="padding:.85rem 1.2rem;color:var(--muted);font-size:.82rem">Nessun dato N4S.</div>'}</div>
-    <div class="report-section"><div class="rs-header"><span class="rs-icon">📡</span><span class="rs-label">Canali Piattaforma</span><span class="rs-desc">SEM · Meta · LinkedIn</span></div><div>${repTable(platRighe,false)}</div></div>
-    <div class="report-section"><div class="rs-header"><span class="rs-icon">💼</span><span class="rs-label">Altri Canali</span><span class="rs-desc">DEM · Native · Affiliazione · SEO · SMS · Call Center · Consulenza</span></div><div>${repTable(otherRighe,true)}</div></div>
-    ${uncat.length?`<div class="report-section"><div class="rs-header"><span class="rs-icon">📦</span><span class="rs-label">Altri Canali</span></div><div>${repTable(uncat,false)}</div></div>`:''}
+    <div style="font-size:.79rem;color:var(--muted);margin-bottom:.85rem">
+      Periodo: <strong style="color:var(--text)">${periodoLabel}</strong>
+      &nbsp;·&nbsp; <span style="color:#C08010;font-weight:600">${prevAttesa.length} in attesa</span>
+      &nbsp;·&nbsp; <span style="color:#0D7A70;font-weight:600">${prevAcquisi.length} acquisiti</span>
+      &nbsp;·&nbsp; ${prevPersi.length} persi
+    </div>
+
+    <!-- N4S -->
+    <div class="report-section">
+      <div class="rs-header"><span class="rs-icon">🎯</span><span class="rs-label">N4S</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0">
+        <div style="padding:.8rem 1.2rem;border-right:1px solid var(--b1)">
+          <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#C08010;margin-bottom:.55rem">⏳ In Attesa</div>
+          ${n4sAtt.budget+n4sAtt.fee>0
+            ?`<div style="display:flex;gap:1.5rem;flex-wrap:wrap">${kpi('Budget',n4sAtt.budget)}${kpi('Fee',n4sAtt.fee)}${kpiTot('Totale',n4sAtt.budget+n4sAtt.fee,'#C08010')}</div>`
+            :'<span style="color:var(--muted);font-size:.82rem">—</span>'}
+        </div>
+        <div style="padding:.8rem 1.2rem">
+          <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#0D7A70;margin-bottom:.55rem">✅ Acquisiti</div>
+          ${n4sAcq.budget+n4sAcq.fee>0
+            ?`<div style="display:flex;gap:1.5rem;flex-wrap:wrap">${kpi('Budget',n4sAcq.budget)}${kpi('Fee',n4sAcq.fee)}${kpiTot('Totale',n4sAcq.budget+n4sAcq.fee,'#0D7A70')}</div>`
+            :'<span style="color:var(--muted);font-size:.82rem">—</span>'}
+        </div>
+      </div>
+    </div>
+
+    <!-- PIATTAFORMA -->
+    <div class="report-section">
+      <div class="rs-header"><span class="rs-icon">📡</span><span class="rs-label">Canali Piattaforma</span><span class="rs-desc">SEM · Meta · LinkedIn · N° = prospect unici con quel canale</span></div>
+      ${repSection(prevAttesa,prevAcquisi,CAT_PLATFORM,false)}
+    </div>
+
+    <!-- ALTRI -->
+    <div class="report-section">
+      <div class="rs-header"><span class="rs-icon">💼</span><span class="rs-label">Altri Canali</span><span class="rs-desc">DEM · Native · Affiliazione · SEO · SMS · Call Center · Consulenza · N° = prospect unici</span></div>
+      ${repSection(prevAttesa,prevAcquisi,CAT_OTHER,true)}
+    </div>
+
+    ${uncatKeys.length?`<div class="report-section"><div class="rs-header"><span class="rs-icon">📦</span><span class="rs-label">Altri canali</span></div>${repSection(prevAttesa,prevAcquisi,uncatKeys,false)}</div>`:''}
+
+    <!-- RIEPILOGO -->
     <div class="report-recap">
       <div class="report-recap-title">Riepilogo — ${periodoLabel}</div>
-      <div class="recap-grid">
-        <div class="recap-item"><div class="rv">${eur(n4sB+n4sF)}</div><div class="rl">N4S</div></div>
-        <div class="recap-item"><div class="rv">${eur(platB+platF)}</div><div class="rl">Piattaforma</div></div>
-        <div class="recap-item"><div class="rv">${eur(otherF)}</div><div class="rl">Fee Altri Canali</div></div>
-        <div class="recap-item"><div class="rv">${eur(grandB+grandF)}</div><div class="rl">Totale Generale</div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+        <div style="background:rgba(192,128,16,.07);border:1px solid rgba(192,128,16,.22);border-radius:8px;padding:.9rem 1.2rem">
+          <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#C08010;margin-bottom:.65rem">⏳ In Attesa — ${prevAttesa.length} prospect</div>
+          <div style="display:flex;gap:1.5rem;flex-wrap:wrap">
+            ${kpi('N4S',n4sAtt.budget+n4sAtt.fee)}
+            ${kpi('Piattaforma',platAtt.budget+platAtt.fee)}
+            ${kpi('Fee altri',othAtt.fee)}
+            ${kpiTot('Totale',grandAtt.b+grandAtt.f,'#C08010')}
+          </div>
+        </div>
+        <div style="background:rgba(13,122,112,.06);border:1px solid rgba(13,122,112,.22);border-radius:8px;padding:.9rem 1.2rem">
+          <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#0D7A70;margin-bottom:.65rem">✅ Acquisiti — ${prevAcquisi.length} prospect</div>
+          <div style="display:flex;gap:1.5rem;flex-wrap:wrap">
+            ${kpi('N4S',n4sAcq.budget+n4sAcq.fee)}
+            ${kpi('Piattaforma',platAcq.budget+platAcq.fee)}
+            ${kpi('Fee altri',othAcq.fee)}
+            ${kpiTot('Totale',grandAcq.b+grandAcq.f,'#0D7A70')}
+          </div>
+        </div>
       </div>
-    </div>`;
+    </div>
+  `;
 }
 
-// ══════════════════════════════════════════════════
-// CONSULTA
-// ══════════════════════════════════════════════════
-const ESEMPI=['nel 2026, qual è il valore totale dei preventivi?','per il mese di marzo, valore per canale','preventivi SEM di quest\'anno','quanto vale la pipeline?','totale fee DEM nel 2025','preventivi In Attesa per canale','valore acquisito nel 2026'];
+
 function buildExamples(){if(el('qex-list').children.length)return;el('qex-list').innerHTML=ESEMPI.map(e=>`<span class="qex" onclick="setQuery('${e}')">${e}</span>`).join('')}
 function setQuery(q){el('query-input').value=q;eseguiQuery()}
 function eseguiQuery(){
