@@ -107,8 +107,8 @@ main{padding:1.2rem 1.6rem;height:calc(100vh - 104px);display:flex;flex-directio
 /* ── KPI ────────────────────────────── */
 .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:.85rem;margin-bottom:1.2rem;flex-shrink:0}
 .kpi{background:var(--s1);border:1px solid var(--b1);border-radius:10px;padding:1.1rem 1.3rem;box-shadow:0 1px 4px rgba(0,0,0,.05)}
-.kpi-val{font-family:var(--display);font-size:1.7rem;font-weight:700;color:var(--gold2);line-height:1.1;margin-bottom:.15rem}
-.kpi-val.sm{font-size:1.25rem}
+.kpi-val{font-family:var(--font);font-size:1.7rem;font-weight:800;color:var(--text);line-height:1.1;margin-bottom:.15rem}
+.kpi-val.sm{font-size:1.25rem;color:var(--text)}
 .kpi-lbl{font-size:.7rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em}
 .kpi-sub{font-size:.75rem;color:var(--dim);margin-top:.25rem}
 
@@ -167,9 +167,9 @@ table.mt td.act{white-space:nowrap;max-width:none}
 table.mt td.merged{color:var(--dim);font-size:.78rem} /* secondary rows of same prospect */
 /* Footer */
 table.mt tfoot tr{background:var(--s2);border-top:2px solid var(--gold2);position:sticky;bottom:0;z-index:10;box-shadow:0 -2px 8px rgba(0,0,0,.07)}
-table.mt tfoot td{padding:.7rem .75rem;font-size:.82rem;font-weight:700;color:var(--gold2);white-space:nowrap}
+table.mt tfoot td{padding:.7rem .75rem;font-size:.84rem;font-weight:800;color:var(--text);white-space:nowrap}
 table.mt tfoot td.foot-lbl{color:var(--muted);font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em}
-table.mt tfoot td.foot-num{text-align:right;font-family:var(--display);font-size:.9rem}
+table.mt tfoot td.foot-num{text-align:right;font-size:.84rem}
 .pg-bar{display:none} /* no pagination */
 
 /* ── BADGES ─────────────────────────── */
@@ -209,14 +209,14 @@ table.mt tfoot td.foot-num{text-align:right;font-family:var(--display);font-size
 .canale-cell{display:flex;align-items:center;gap:.3rem;border-right:1px solid var(--b1);padding:.4rem .5rem}
 .canale-cell select{border:none;background:transparent;padding:.18rem .25rem;flex:1;font-size:.82rem}
 .canale-cell select:focus{background:rgba(160,104,8,.05);box-shadow:none}
-.r-totriga{background:rgba(160,104,8,.06);color:var(--gold2);font-weight:700;border-right:1px solid var(--b1);padding:.55rem .6rem;display:flex;align-items:center;font-size:.82rem;white-space:nowrap}
+.r-totriga{background:var(--s3);color:var(--text);font-weight:800;border-right:1px solid var(--b1);padding:.55rem .6rem;display:flex;align-items:center;font-size:.82rem;white-space:nowrap}
 .btn-del-riga{background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem;padding:0 .35rem;display:flex;align-items:center;justify-content:center;width:100%;transition:color .14s}
 .btn-del-riga:hover{color:var(--rose)}
 .righe-wrap{border:1px solid var(--b1);border-radius:var(--r);overflow:hidden;margin-bottom:.6rem}
 .righe-totali{display:flex;gap:2rem;padding:.75rem 1rem;background:var(--s2);border-top:1px solid var(--b1)}
 .tot-item{font-size:.79rem}
 .tot-item span{color:var(--muted);margin-right:.35rem}
-.tot-item strong{color:var(--gold2);font-family:var(--display);font-size:.92rem}
+.tot-item strong{color:var(--text);font-size:.94rem;font-weight:800}
 
 /* stato badge nel select riga */
 .riga select.r-stato-canale{font-size:.72rem;padding:.3rem .4rem}
@@ -233,14 +233,14 @@ table.mt tfoot td.foot-num{text-align:right;font-family:var(--display);font-size
 .rep-group-icon{font-size:1.2rem}
 .rep-group-title{font-family:var(--display);font-size:1rem;font-weight:700;flex:1}
 .rep-group-count{font-size:.78rem;color:var(--muted);background:var(--s1);border:1px solid var(--b1);border-radius:20px;padding:.18rem .7rem}
-.rep-group-total{font-family:var(--display);font-size:1.05rem;font-weight:800;color:var(--gc,var(--gold2))}
+.rep-group-total{font-family:var(--font);font-size:.97rem;font-weight:800;color:var(--text)}
 
 /* N4S row inside group */
 .rep-n4s-row{display:flex;gap:2rem;align-items:center;padding:1rem 1.3rem;flex-wrap:wrap}
 .rep-n4s-stat{display:flex;flex-direction:column;gap:.15rem}
 .rep-kpi-lbl{font-size:.68rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:600}
 .rep-kpi-val{font-size:.9rem;font-weight:600}
-.rep-kpi-tot{border-left:2px solid var(--b1);padding-left:1.2rem}
+.rep-kpi-tot{border-left:2px solid var(--b2);padding-left:1.2rem}
 
 /* Section inside group */
 .report-section{background:var(--s1);border-top:1px solid var(--b1);overflow:hidden}
@@ -262,20 +262,20 @@ table.rep-tbl th.num{text-align:right}
 table.rep-tbl td{padding:.7rem 1.1rem;border-top:1px solid var(--b1);border-right:1px solid var(--b1)}
 table.rep-tbl td:last-child{border-right:none}
 table.rep-tbl td.num{text-align:right;font-variant-numeric:tabular-nums}
-table.rep-tbl tr.tot-row td{background:var(--s2);font-weight:700;color:var(--gold2);border-top:2px solid var(--b2)}
+table.rep-tbl tr.tot-row td{background:var(--s2);font-weight:700;color:var(--text);font-size:.85rem;border-top:2px solid var(--b2)}
 
 /* Summary bar at bottom of group */
 .rep-group-summary{display:flex;gap:0;border-top:2px solid var(--b2);background:var(--s2)}
 .rep-sum-item{flex:1;padding:.85rem 1.1rem;border-right:1px solid var(--b1);display:flex;flex-direction:column;gap:.25rem}
 .rep-sum-item:last-child{border-right:none}
-.rep-sum-tot{background:color-mix(in srgb,var(--gc,var(--gold2)) 6%,var(--s2))}
+.rep-sum-tot{background:var(--s3)}
 
 .report-filters{background:var(--s1);border:1px solid var(--b1);border-radius:10px;padding:1rem 1.3rem;margin-bottom:1.2rem;display:flex;gap:.9rem;align-items:flex-end;flex-wrap:wrap;flex-shrink:0}
 .report-filters .fg{margin-bottom:0;min-width:120px;flex:1}
 .rep-scroll{flex:1;overflow-y:auto;min-height:0}
 /* report styles moved above */
 .report-recap{background:var(--s1);border:2px solid var(--gold2);border-radius:10px;padding:1.2rem 1.4rem;margin-top:1rem}
-.report-recap-title{font-family:var(--display);font-size:1rem;font-weight:700;color:var(--gold2);margin-bottom:.85rem}
+.report-recap-title{font-family:var(--font);font-size:1rem;font-weight:800;color:var(--text);margin-bottom:.85rem}
 .recap-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.85rem}
 .recap-item{text-align:center}
 .recap-item .rv{font-family:var(--display);font-size:1.35rem;font-weight:700;color:var(--text)}
@@ -663,8 +663,12 @@ function now(){return new Date().toISOString()}
 function uuid(){return crypto.randomUUID()}
 function num(n){const v=parseFloat(n);return isNaN(v)?0:v}
 function fmtDate(d){if(!d)return '—';try{return new Date(d+'T12:00:00').toLocaleDateString('it-IT')}catch{return d}}
-function fmtN(n){const v=parseFloat(n);if(isNaN(v)||n===''||n===null||n===undefined)return null;return new Intl.NumberFormat('it-IT').format(v)}
-function eur(n){const f=fmtN(n);return f?'€ '+f:'—'}
+function fmtN(n){
+  const v=parseFloat(n);
+  if(isNaN(v)||n===''||n===null||n===undefined)return null;
+  return new Intl.NumberFormat('it-IT',{minimumFractionDigits:0,maximumFractionDigits:2}).format(v);
+}
+function eur(n){const f=fmtN(n);return f?'€ '+f:'—'}
 function badgeCls(s){return 'badge b-'+(s||'in attesa').toLowerCase().replace(/\s+/g,'-')}
 function feedbackBadge(f){if(!f)return '—';const cls=f==='Vendita'?'b-feedback-vend':f==='Rifiutato'?'b-feedback-rif':'b-feedback-att';return`<span class="badge ${cls}">${f}</span>`}
 function statoCanaleColor(s){if(s==='Attivato')return'color:#0A6058;font-weight:600';if(s==='Perso')return'color:#901818;font-weight:600';return'color:#8A6000'}
@@ -1139,10 +1143,10 @@ function renderTable(){
         `<td style="font-weight:500">${r?.canale||'—'}</td>`,
         `<td class="num" ${bdAttr} style="cursor:${bdTip?'help':'default'}">${eur(rBudget)}</td>`,
         `<td class="num" ${bdAttr} style="cursor:${bdTip?'help':'default'}">${eur(rFee)}</td>`,
-        `<td class="num" style="font-weight:600;color:var(--gold2)">${eur(rTot)}</td>`,
+        `<td class="num" style="font-weight:700;color:var(--text)">${eur(rTot)}</td>`,
         `<td><span style="${statoCanaleColor(rStato)};font-size:.78rem">${rStato}</span></td>`,
         // Totale preventivo — dopo stato canale, solo prima riga con rowspan
-        isFirst ? `<td rowspan="${n}" style="vertical-align:middle;text-align:right;font-size:.81rem;font-weight:700;color:var(--gold2);background:rgba(160,104,8,.06);border-left:2px solid rgba(160,104,8,.2);padding:.6rem .75rem;white-space:nowrap">${eur(totPrevV)}</td>` : '',
+        isFirst ? `<td rowspan="${n}" style="vertical-align:middle;text-align:right;font-size:.83rem;font-weight:800;color:var(--text);background:var(--s3);border-left:2px solid var(--b2);padding:.6rem .75rem;white-space:nowrap">${eur(totPrevV)}</td>` : '',
       ].join('');
 
       // Colonne prospect destra — solo prima riga, rowspan
@@ -1339,7 +1343,7 @@ function renderReport(){
           ? `<div class="rep-n4s-row">
               <div class="rep-n4s-stat"><span class="rep-kpi-lbl">Budget</span><span class="rep-kpi-val">${eur(n4s.budget)}</span></div>
               <div class="rep-n4s-stat"><span class="rep-kpi-lbl">Fee</span><span class="rep-kpi-val">${eur(n4s.fee)}</span></div>
-              <div class="rep-n4s-stat rep-kpi-tot"><span class="rep-kpi-lbl">Totale</span><span class="rep-kpi-val" style="color:${color};font-weight:800">${eur(n4s.budget+n4s.fee)}</span></div>
+              <div class="rep-n4s-stat rep-kpi-tot"><span class="rep-kpi-lbl">Totale</span><span class="rep-kpi-val" style="color:var(--text);font-weight:800;font-size:.95rem">${eur(n4s.budget+n4s.fee)}</span></div>
               <div class="rep-n4s-stat"><span class="rep-kpi-lbl">Prospect</span><span class="rep-kpi-val">${n4s.n||'—'}</span></div>
             </div>`
           : '<div class="rep-empty-small">Nessun dato N4S</div>'
@@ -1361,7 +1365,7 @@ function renderReport(){
         <div class="rep-sum-item"><span class="rep-kpi-lbl">N4S</span><strong>${eur(n4s.budget+n4s.fee)}</strong></div>
         <div class="rep-sum-item"><span class="rep-kpi-lbl">Piattaforma</span><strong>${eur(plat.budget+plat.fee)}</strong></div>
         <div class="rep-sum-item"><span class="rep-kpi-lbl">Fee altri canali</span><strong>${eur(oth.fee)}</strong></div>
-        <div class="rep-sum-item rep-sum-tot"><span class="rep-kpi-lbl">TOTALE</span><strong style="color:${color};font-size:1.05rem">${eur(totVal)}</strong></div>
+        <div class="rep-sum-item rep-sum-tot"><span class="rep-kpi-lbl">TOTALE</span><strong style="color:var(--text);font-size:.97rem">${eur(totVal)}</strong></div>
       </div>
     </div>`;
   };
