@@ -129,19 +129,21 @@ main{padding:1.2rem 1.6rem;height:calc(100vh - 104px);display:flex;flex-directio
 .tbl-outer{flex:1;border:1px solid var(--b1);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 1px 4px rgba(0,0,0,.05);min-height:0}
 .tbl-scroll{flex:1;overflow:auto}
 
-table.mt{width:100%;border-collapse:collapse;font-size:.81rem}
+table.mt{width:100%;border-collapse:collapse;font-size:.81rem;table-layout:fixed}
 /* Header labels */
 table.mt thead tr.hl th{
   background:var(--s2);padding:.65rem .75rem;text-align:left;
   font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;
   color:var(--muted);white-space:nowrap;cursor:pointer;user-select:none;
-  border-bottom:1px solid var(--b1);position:sticky;top:0;z-index:10;
+  border-bottom:1px solid var(--b1);border-right:1px solid var(--b1);position:sticky;top:0;z-index:10;
   transition:color .14s}
+table.mt thead tr.hl th:last-child{border-right:none}
 table.mt thead tr.hl th:hover{color:var(--text)}
 table.mt thead tr.hl th.sa::after{content:" ↑";color:var(--gold2)}
 table.mt thead tr.hl th.sd::after{content:" ↓";color:var(--gold2)}
 /* Header filters */
-table.mt thead tr.hf th{background:var(--s3);padding:.35rem .45rem;border-bottom:2px solid var(--b1);position:sticky;top:37px;z-index:10;vertical-align:top}
+table.mt thead tr.hf th{background:var(--s3);padding:.35rem .45rem;border-bottom:2px solid var(--b1);border-right:1px solid var(--b1);position:sticky;top:37px;z-index:10;vertical-align:top}
+table.mt thead tr.hf th:last-child{border-right:none}
 table.mt thead tr.hf th input,table.mt thead tr.hf th select{
   font-size:.74rem;padding:.24rem .45rem;border-radius:5px;background:var(--s1);
   border:1px solid var(--b1);color:var(--text);width:100%;min-width:0;height:26px}
@@ -156,7 +158,10 @@ table.mt tbody tr.prospect-start{border-top:2px solid var(--b2)}
 table.mt td[rowspan]{border-right:1px solid var(--b1)}
 table.mt tbody tr:last-child td{border-bottom:none}
 table.mt tbody tr.prospect-start:first-child{border-top:none}
-table.mt td{padding:.6rem .75rem;white-space:nowrap;max-width:160px;overflow:hidden;text-overflow:ellipsis}
+table.mt td{padding:.6rem .75rem;white-space:nowrap;max-width:160px;overflow:hidden;text-overflow:ellipsis;border-right:1px solid var(--b1)}
+table.mt td:last-child{border-right:none}
+table.mt tfoot td{border-right:1px solid var(--b2)}
+table.mt tfoot td:last-child{border-right:none}
 table.mt td.num{text-align:right;font-variant-numeric:tabular-nums}
 table.mt td.act{white-space:nowrap;max-width:none}
 table.mt td.merged{color:var(--dim);font-size:.78rem} /* secondary rows of same prospect */
@@ -1029,7 +1034,6 @@ function renderTable(){
 
       // Colonne prospect — solo prima riga, con rowspan
       const prospectLCells = isFirst ? [
-        `<td rowspan="${n}" style="vertical-align:middle">${d.settimana||'—'}</td>`,
         `<td rowspan="${n}" style="vertical-align:middle">${d.commerciale||'—'}</td>`,
         `<td rowspan="${n}" style="vertical-align:middle">${fmtDate(d.dataUscita)}</td>`,
         `<td rowspan="${n}" style="vertical-align:middle;font-weight:700">${d.prospect||'—'}</td>`,
