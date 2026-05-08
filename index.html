@@ -417,12 +417,12 @@ table.q-tbl tr.tot-row td{background:var(--s2);font-weight:700;color:var(--gold2
     <div class="h-right"><span class="h-user" id="h-user"></span><button class="btn btn-ghost btn-sm" onclick="logout()">Esci</button></div>
   </header>
   <div class="tabs">
-    <div class="tab on" id="tab-dash"     onclick="goTab('dash')">📊 Dashboard</div>
-    <div class="tab"    id="tab-pipe"     onclick="goTab('pipe')">⏳ In Attesa</div>
+    <div class="tab on" id="tab-pipe"     onclick="goTab('pipe')">⏳ In Attesa</div>
     <div class="tab"    id="tab-all"      onclick="goTab('all')">🗂 Tutti</div>
     <div class="tab"    id="tab-report"   onclick="goTab('report')">📈 Report</div>
+    <div class="tab"    id="tab-dash"     onclick="goTab('dash')">📊 Dashboard</div>
     <div class="tab"    id="tab-consulta" onclick="goTab('consulta')">🔍 Consulta</div>
-    <div class="tab"    id="tab-new"      onclick="goTab('new')">＋ Nuovo</div>
+    <div class="tab"    id="tab-new"      onclick="goTab('new')">＋ Nuovo Preventivo</div>
   </div>
   <main>
 
@@ -1523,8 +1523,13 @@ async function init(){
     initMsal();
     try{await msalApp.handleRedirectPromise()}catch{}
     const accounts=msalApp.getAllAccounts();
-    if(accounts.length){acct=accounts[0];el('h-user').textContent=acct.name||acct.username;showApp();await loadData()}
-    else showLogin();
+    if(accounts.length){
+      acct=accounts[0];
+      el('h-user').textContent=acct.name||acct.username;
+      showApp();
+      await loadData();
+      goTab('pipe'); // schermata iniziale: In Attesa
+    }else showLogin();
   }catch(e){console.error('Init error:',e);lsDel('pipeline_cid');lsDel('pipeline_share');CID='';SHARE_URL='';show('setup-screen')}
 }
 document.addEventListener('DOMContentLoaded',()=>{
