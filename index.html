@@ -1104,13 +1104,40 @@ function getPreventiviFiltrati(){
   });
 }
 function getAllRighe(preventivi){const out=[];preventivi.forEach(d=>(d.righe||[]).forEach(r=>out.push({...r,_prev:d})));return out}
-function aggByCanale(righe){const m={};righe.forEach(r=>{const k=r.canale||'—';if(!m[k])m[k]={budget:0,fee:0,count:0};m[k].budget+=num(r.budget);m[k].fee+=num(r.fee)+num(r.setup||0);m[k].count++});return m}
+function aggByCanale(righe){
+  const m={};
+  righe.forEach(r=>{
+    const k=r.canale||'—';
+    if(!m[k])m[k]={budget:0,fee:0,count:0,countBudget:0,countFee:0};
+    const b=num(r.budget), f=num(r.fee)+num(r.setup||0);
+    m[k].budget+=b;
+    m[k].fee+=f;
+    m[k].count++;
+    if(b>0) m[k].countBudget++;
+    if(f>0) m[k].countFee++;
+  });
+  return m;
+}
 function repTable(rows,showFeeOnly=false){
   if(!rows.length)return'<div style="padding:.9rem 1.2rem;color:var(--muted);font-size:.82rem">Nessun dato per il periodo selezionato.</div>';
-  const ths=showFeeOnly?'<th>Canale</th><th class="num">Fee+Setup €</th><th class="num">N°</th>':'<th>Canale</th><th class="num">Budget Piattaforma €</th><th class="num">Fee+Setup €</th><th class="num">Totale €</th><th class="num">N°</th>';
-  const trs=rows.map(r=>showFeeOnly?`<tr><td><strong>${r.canale}</strong></td><td class="num">${eur(r.fee)}</td><td class="num">${r.count}</td></tr>`:`<tr><td><strong>${r.canale}</strong></td><td class="num">${eur(r.budget)}</td><td class="num">${eur(r.fee)}</td><td class="num">${eur(r.budget+r.fee)}</td><td class="num">${r.count}</td></tr>`).join('');
-  const totB=rows.reduce((s,r)=>s+r.budget,0),totF=rows.reduce((s,r)=>s+r.fee,0),totN=rows.reduce((s,r)=>s+r.count,0);
-  const totRow=showFeeOnly?`<tr class="tot-row"><td>Totale</td><td class="num">${eur(totF)}</td><td class="num">${totN}</td></tr>`:`<tr class="tot-row"><td>Totale</td><td class="num">${eur(totB)}</td><td class="num">${eur(totF)}</td><td class="num">${eur(totB+totF)}</td><td class="num">${totN}</td></tr>`;
+  const ths=showFeeOnly
+    ?'<th>Canale</th><th class="num">Fee+Setup €</th><th class="num">N° preventivi con valore</th>'
+    :'<th>Canale</th><th class="num">Budget Piattaforma €</th><th class="num">Fee+Setup €</th><th class="num">Totale €</th><th class="num">N° preventivi con valore</th>';
+  const trs=rows.map(r=>{
+    // Use countFee for fee-only sections, countBudget for platform sections
+    const cnt = showFeeOnly ? (r.countFee||0) : (r.countBudget||0);
+    return showFeeOnly
+      ?`<tr><td><strong>${r.canale}</strong></td><td class="num">${eur(r.fee)}</td><td class="num" style="color:${cnt>0?'var(--text)':'var(--muted)'}">${cnt>0?cnt:'—'}</td></tr>`
+      :`<tr><td><strong>${r.canale}</strong></td><td class="num">${eur(r.budget)}</td><td class="num">${eur(r.fee)}</td><td class="num">${eur(r.budget+r.fee)}</td><td class="num" style="color:${cnt>0?'var(--text)':'var(--muted)'}">${cnt>0?cnt:'—'}</td></tr>`;
+  }).join('');
+  const totB=rows.reduce((s,r)=>s+r.budget,0);
+  const totF=rows.reduce((s,r)=>s+r.fee,0);
+  const totN=showFeeOnly
+    ?rows.reduce((s,r)=>s+(r.countFee||0),0)
+    :rows.reduce((s,r)=>s+(r.countBudget||0),0);
+  const totRow=showFeeOnly
+    ?`<tr class="tot-row"><td>Totale</td><td class="num">${eur(totF)}</td><td class="num">${totN||'—'}</td></tr>`
+    :`<tr class="tot-row"><td>Totale</td><td class="num">${eur(totB)}</td><td class="num">${eur(totF)}</td><td class="num">${eur(totB+totF)}</td><td class="num">${totN||'—'}</td></tr>`;
   return`<table class="rep-tbl"><thead><tr>${ths}</tr></thead><tbody>${trs}${totRow}</tbody></table>`;
 }
 function renderReport(){
