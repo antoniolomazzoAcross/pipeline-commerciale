@@ -222,21 +222,58 @@ table.mt tfoot td.foot-num{text-align:right;font-family:var(--display);font-size
 .riga select.r-stato-canale{font-size:.72rem;padding:.3rem .4rem}
 
 /* ── REPORT ─────────────────────────── */
+/* Header bar */
+.rep-header-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.2rem;padding:.6rem 0;flex-shrink:0}
+.rep-periodo{font-family:var(--display);font-size:1rem;font-weight:700}
+.rep-header-stats{display:flex;gap:1.2rem;font-size:.82rem}
+
+/* Group block */
+.rep-group{border:2px solid var(--gc, var(--b1));border-radius:12px;overflow:hidden;margin-bottom:1.5rem}
+.rep-group-header{display:flex;align-items:center;gap:.9rem;padding:.9rem 1.3rem;background:color-mix(in srgb,var(--gc,var(--gold2)) 8%,var(--s2));border-bottom:1px solid color-mix(in srgb,var(--gc,var(--b1)) 30%,var(--b1))}
+.rep-group-icon{font-size:1.2rem}
+.rep-group-title{font-family:var(--display);font-size:1rem;font-weight:700;flex:1}
+.rep-group-count{font-size:.78rem;color:var(--muted);background:var(--s1);border:1px solid var(--b1);border-radius:20px;padding:.18rem .7rem}
+.rep-group-total{font-family:var(--display);font-size:1.05rem;font-weight:800;color:var(--gc,var(--gold2))}
+
+/* N4S row inside group */
+.rep-n4s-row{display:flex;gap:2rem;align-items:center;padding:1rem 1.3rem;flex-wrap:wrap}
+.rep-n4s-stat{display:flex;flex-direction:column;gap:.15rem}
+.rep-kpi-lbl{font-size:.68rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:600}
+.rep-kpi-val{font-size:.9rem;font-weight:600}
+.rep-kpi-tot{border-left:2px solid var(--b1);padding-left:1.2rem}
+
+/* Section inside group */
+.report-section{background:var(--s1);border-top:1px solid var(--b1);overflow:hidden}
+.rs-header{padding:.75rem 1.3rem;display:flex;align-items:flex-start;gap:.75rem;background:var(--s2)}
+.rs-icon{font-size:1rem;margin-top:.05rem}
+.rs-label{font-family:var(--display);font-size:.9rem;font-weight:700}
+.rs-hint{font-size:.72rem;color:var(--muted);margin-top:.15rem}
+.rs-body{background:var(--s1)}
+
+/* Empty states */
+.rep-empty{padding:1rem 1.3rem;font-size:.82rem;color:var(--muted);font-style:italic}
+.rep-empty-small{padding:.7rem 1.3rem;font-size:.8rem;color:var(--muted);font-style:italic}
+
+/* Table */
+table.rep-tbl{width:100%;border-collapse:collapse;font-size:.83rem}
+table.rep-tbl th{background:var(--s2);padding:.58rem 1.1rem;text-align:left;font-size:.67rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);white-space:nowrap;border-bottom:1px solid var(--b1);border-right:1px solid var(--b1)}
+table.rep-tbl th:last-child{border-right:none}
+table.rep-tbl th.num{text-align:right}
+table.rep-tbl td{padding:.7rem 1.1rem;border-top:1px solid var(--b1);border-right:1px solid var(--b1)}
+table.rep-tbl td:last-child{border-right:none}
+table.rep-tbl td.num{text-align:right;font-variant-numeric:tabular-nums}
+table.rep-tbl tr.tot-row td{background:var(--s2);font-weight:700;color:var(--gold2);border-top:2px solid var(--b2)}
+
+/* Summary bar at bottom of group */
+.rep-group-summary{display:flex;gap:0;border-top:2px solid var(--b2);background:var(--s2)}
+.rep-sum-item{flex:1;padding:.85rem 1.1rem;border-right:1px solid var(--b1);display:flex;flex-direction:column;gap:.25rem}
+.rep-sum-item:last-child{border-right:none}
+.rep-sum-tot{background:color-mix(in srgb,var(--gc,var(--gold2)) 6%,var(--s2))}
+
 .report-filters{background:var(--s1);border:1px solid var(--b1);border-radius:10px;padding:1rem 1.3rem;margin-bottom:1.2rem;display:flex;gap:.9rem;align-items:flex-end;flex-wrap:wrap;flex-shrink:0}
 .report-filters .fg{margin-bottom:0;min-width:120px;flex:1}
 .rep-scroll{flex:1;overflow-y:auto;min-height:0}
-.report-section{background:var(--s1);border:1px solid var(--b1);border-radius:10px;margin-bottom:.85rem;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)}
-.rs-header{padding:.9rem 1.2rem;display:flex;align-items:center;gap:.7rem;border-bottom:1px solid var(--b1);background:var(--s2)}
-.rs-icon{font-size:1.1rem}
-.rs-label{font-family:var(--display);font-size:.95rem;font-weight:700}
-.rs-desc{font-size:.76rem;color:var(--muted);margin-left:auto}
-table.rep-tbl{width:100%;border-collapse:collapse;font-size:.82rem}
-table.rep-tbl th{background:var(--s2);padding:.58rem 1.1rem;text-align:left;font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);white-space:nowrap}
-table.rep-tbl th.num{text-align:right}
-table.rep-tbl td{padding:.65rem 1.1rem;border-top:1px solid var(--b1)}
-table.rep-tbl td.num{text-align:right;font-variant-numeric:tabular-nums}
-table.rep-tbl tr.tot-row td{background:var(--s2);font-weight:700;color:var(--gold2)}
-table.rep-tbl tr:first-child td{border-top:none}
+/* report styles moved above */
 .report-recap{background:var(--s1);border:2px solid var(--gold2);border-radius:10px;padding:1.2rem 1.4rem;margin-top:1rem}
 .report-recap-title{font-family:var(--display);font-size:1rem;font-weight:700;color:var(--gold2);margin-bottom:.85rem}
 .recap-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.85rem}
@@ -1184,137 +1221,166 @@ function aggByCanale(preventivi){
   });
   return m;
 }
-function repSection(prevInAttesa, prevAcquisiti, catCanali, showFeeOnly){
-  // Calcola aggregato per In Attesa e Acquisiti separatamente
-  const aggA = aggByCanale(prevInAttesa);
-  const aggC = aggByCanale(prevAcquisiti);
+function repSection(preventivi, catCanali, showFeeOnly){
+  const agg = aggByCanale(preventivi);
+  const rows = catCanali.flatMap(c=>agg[c]?[{canale:c,...agg[c]}]:[]);
+  if(!rows.length) return '<div class="rep-empty">Nessun dato per questo periodo</div>';
 
-  // Filtra solo i canali della categoria
-  const rowsA = catCanali.flatMap(c=>aggA[c]?[{canale:c,...aggA[c]}]:[]);
-  const rowsC = catCanali.flatMap(c=>aggC[c]?[{canale:c,...aggC[c]}]:[]);
+  const ths = showFeeOnly
+    ? '<th>Canale</th><th class="num">Fee + Setup €</th><th class="num" title="Prospect unici con questo canale">N° Prospect</th>'
+    : '<th>Canale</th><th class="num">Budget €</th><th class="num">Fee + Setup €</th><th class="num">Totale €</th><th class="num" title="Prospect unici con questo canale">N° Prospect</th>';
 
-  const mkTable = (rows, label, color) => {
-    if(!rows.length) return `<div style="padding:.6rem 1.2rem;font-size:.8rem;color:var(--muted)">Nessun dato ${label.toLowerCase()}</div>`;
-    const ths = showFeeOnly
-      ? `<th>${label}</th><th class="num">Fee+Setup €</th><th class="num" title="Numero di prospect con questo canale">N° Prospect</th>`
-      : `<th>${label}</th><th class="num">Budget €</th><th class="num">Fee+Setup €</th><th class="num">Totale €</th><th class="num" title="Numero di prospect con questo canale">N° Prospect</th>`;
-    const trs = rows.map(r=>{
-      const cnt = r.prospects||0;
-      return showFeeOnly
-        ?`<tr><td><strong>${r.canale}</strong></td><td class="num">${eur(r.fee)}</td><td class="num">${cnt||'—'}</td></tr>`
-        :`<tr><td><strong>${r.canale}</strong></td><td class="num">${eur(r.budget)}</td><td class="num">${eur(r.fee)}</td><td class="num">${eur(r.budget+r.fee)}</td><td class="num">${cnt||'—'}</td></tr>`;
-    }).join('');
-    const totB=rows.reduce((s,r)=>s+r.budget,0);
-    const totF=rows.reduce((s,r)=>s+r.fee,0);
-    const totN=rows.reduce((s,r)=>s+(r.prospects||0),0);
-    const totRow = showFeeOnly
-      ?`<tr class="tot-row" style="border-top:2px solid ${color}"><td>Totale ${label}</td><td class="num">${eur(totF)}</td><td class="num">${totN||'—'}</td></tr>`
-      :`<tr class="tot-row" style="border-top:2px solid ${color}"><td>Totale ${label}</td><td class="num">${eur(totB)}</td><td class="num">${eur(totF)}</td><td class="num">${eur(totB+totF)}</td><td class="num">${totN||'—'}</td></tr>`;
-    return`<table class="rep-tbl"><thead><tr>${ths}</tr></thead><tbody>${trs}${totRow}</tbody></table>`;
+  const trs = rows.map(r => {
+    const cnt = r.prospects || 0;
+    const hasVal = showFeeOnly ? r.fee > 0 : (r.budget + r.fee) > 0;
+    return showFeeOnly
+      ? `<tr>
+          <td><strong>${r.canale}</strong></td>
+          <td class="num">${eur(r.fee)}</td>
+          <td class="num" style="color:${cnt>0?'var(--text)':'var(--dim)'}">${cnt > 0 ? cnt : '—'}</td>
+         </tr>`
+      : `<tr>
+          <td><strong>${r.canale}</strong></td>
+          <td class="num">${eur(r.budget)}</td>
+          <td class="num">${eur(r.fee)}</td>
+          <td class="num" style="font-weight:600">${eur(r.budget + r.fee)}</td>
+          <td class="num" style="color:${cnt>0?'var(--text)':'var(--dim)'}">${cnt > 0 ? cnt : '—'}</td>
+         </tr>`;
+  }).join('');
+
+  const totB = rows.reduce((s,r) => s + r.budget, 0);
+  const totF = rows.reduce((s,r) => s + r.fee, 0);
+  const totN = rows.reduce((s,r) => s + (r.prospects||0), 0);
+  const totRow = showFeeOnly
+    ? `<tr class="tot-row"><td>Totale</td><td class="num">${eur(totF)}</td><td class="num">${totN||'—'}</td></tr>`
+    : `<tr class="tot-row"><td>Totale</td><td class="num">${eur(totB)}</td><td class="num">${eur(totF)}</td><td class="num">${eur(totB+totF)}</td><td class="num">${totN||'—'}</td></tr>`;
+
+  return `<table class="rep-tbl"><thead><tr>${ths}</tr></thead><tbody>${trs}${totRow}</tbody></table>`;
+}
+
+function renderReport(){
+  const tutti = getPreventiviFiltrati();
+  const attesa   = tutti.filter(d => d.stato === 'In Attesa');
+  const acquisiti= tutti.filter(d => d.stato === 'Acquisito');
+  const persi    = tutti.filter(d => d.stato === 'Perso');
+
+  const anno  = el('r-anno').value;
+  const mese  = el('r-mese').value;
+  const comm  = el('r-comm').value;
+  const periodo = [comm, mese ? MESI_NUM[parseInt(mese)] : '', anno].filter(Boolean).join(' · ') || 'Tutto il periodo';
+
+  const aggAtt = aggByCanale(attesa);
+  const aggAcq = aggByCanale(acquisiti);
+  const allCat = [...CAT_N4S, ...CAT_PLATFORM, ...CAT_OTHER];
+  const uncatKeys = [...new Set([
+    ...Object.keys(aggAtt),
+    ...Object.keys(aggAcq)
+  ])].filter(c => !allCat.includes(c) && c !== '—');
+
+  const sumCat = (agg, cats) => cats.reduce((s,c) => ({
+    budget: s.budget + (agg[c]?.budget||0),
+    fee:    s.fee    + (agg[c]?.fee   ||0),
+    n:      s.n      + (agg[c]?.prospects||0)
+  }), {budget:0, fee:0, n:0});
+
+  const n4sAtt  = sumCat(aggAtt, CAT_N4S);
+  const platAtt = sumCat(aggAtt, CAT_PLATFORM);
+  const othAtt  = sumCat(aggAtt, CAT_OTHER);
+  const n4sAcq  = sumCat(aggAcq, CAT_N4S);
+  const platAcq = sumCat(aggAcq, CAT_PLATFORM);
+  const othAcq  = sumCat(aggAcq, CAT_OTHER);
+
+  const totAtt = attesa.reduce((s,d)  => { const t=recTotals(d); return s+t.valore; }, 0);
+  const totAcq = acquisiti.reduce((s,d) => { const t=recTotals(d); return s+t.valore; }, 0);
+
+  // ── N4S summary card ─────────────────────────────────────────────
+  const n4sCard = (label, dat, color) => {
+    if(dat.budget + dat.fee === 0)
+      return `<div class="rep-n4s-half" style="border-color:${color}30">
+        <div class="rep-n4s-badge" style="background:${color}15;color:${color}">${label}</div>
+        <div class="rep-empty-small">Nessun dato</div>
+      </div>`;
+    return `<div class="rep-n4s-half" style="border-color:${color}30">
+      <div class="rep-n4s-badge" style="background:${color}15;color:${color}">${label}</div>
+      <div class="rep-n4s-vals">
+        <div><div class="rep-kpi-lbl">Budget</div><div class="rep-kpi-val">${eur(dat.budget)}</div></div>
+        <div><div class="rep-kpi-lbl">Fee</div><div class="rep-kpi-val">${eur(dat.fee)}</div></div>
+        <div class="rep-kpi-tot"><div class="rep-kpi-lbl">Totale</div><div class="rep-kpi-val" style="color:${color};font-size:1rem;font-weight:800">${eur(dat.budget+dat.fee)}</div></div>
+        <div><div class="rep-kpi-lbl">Prospect</div><div class="rep-kpi-val">${dat.n||'—'}</div></div>
+      </div>
+    </div>`;
   };
 
-  return mkTable(rowsA,'In Attesa','#C08010') + mkTable(rowsC,'Acquisiti','#0D7A70');
-}
-
-// Legacy single-table version kept for N4S summary card
-function repTable(rows,showFeeOnly=false){
-  if(!rows.length)return'<div style="padding:.9rem 1.2rem;color:var(--muted);font-size:.82rem">Nessun dato.</div>';
-  const ths=showFeeOnly?'<th>Canale</th><th class="num">Fee+Setup €</th><th class="num">N° Prospect</th>':'<th>Canale</th><th class="num">Budget €</th><th class="num">Fee+Setup €</th><th class="num">Totale €</th><th class="num">N° Prospect</th>';
-  const trs=rows.map(r=>`<tr><td><strong>${r.canale}</strong></td>${showFeeOnly?`<td class="num">${eur(r.fee)}</td>`:`<td class="num">${eur(r.budget)}</td><td class="num">${eur(r.fee)}</td><td class="num">${eur(r.budget+r.fee)}</td>`}<td class="num">${r.prospects||'—'}</td></tr>`).join('');
-  const totB=rows.reduce((s,r)=>s+r.budget,0),totF=rows.reduce((s,r)=>s+r.fee,0),totN=rows.reduce((s,r)=>s+(r.prospects||0),0);
-  const totRow=showFeeOnly?`<tr class="tot-row"><td>Totale</td><td class="num">${eur(totF)}</td><td class="num">${totN}</td></tr>`:`<tr class="tot-row"><td>Totale</td><td class="num">${eur(totB)}</td><td class="num">${eur(totF)}</td><td class="num">${eur(totB+totF)}</td><td class="num">${totN}</td></tr>`;
-  return`<table class="rep-tbl"><thead><tr>${ths}</tr></thead><tbody>${trs}${totRow}</tbody></table>`;
-}
-function renderReport(){
-  const preventivi=getPreventiviFiltrati();
-  const prevAttesa  = preventivi.filter(d=>d.stato==='In Attesa');
-  const prevAcquisi = preventivi.filter(d=>d.stato==='Acquisito');
-  const prevPersi   = preventivi.filter(d=>d.stato==='Perso');
-
-  const anno=el('r-anno').value,mese=el('r-mese').value,comm=el('r-comm').value;
-  const periodoLabel=[comm,mese?MESI_NUM[parseInt(mese)]:'',anno].filter(Boolean).join(' · ')||'Tutto il periodo';
-
-  const aggAtt=aggByCanale(prevAttesa), aggAcq=aggByCanale(prevAcquisi);
-  const allCat=[...CAT_N4S,...CAT_PLATFORM,...CAT_OTHER];
-  const uncatKeys=Object.keys(aggByCanale(preventivi)).filter(c=>!allCat.includes(c)&&c!=='—');
-
-  const sumCat=(agg,cats)=>cats.reduce((s,c)=>({budget:s.budget+(agg[c]?.budget||0),fee:s.fee+(agg[c]?.fee||0)}),{budget:0,fee:0});
-
-  const n4sAtt=sumCat(aggAtt,CAT_N4S), n4sAcq=sumCat(aggAcq,CAT_N4S);
-  const platAtt=sumCat(aggAtt,CAT_PLATFORM), platAcq=sumCat(aggAcq,CAT_PLATFORM);
-  const othAtt=sumCat(aggAtt,CAT_OTHER), othAcq=sumCat(aggAcq,CAT_OTHER);
-
-  const grandAtt=prevAttesa.reduce((s,d)=>{const t=recTotals(d);return{b:s.b+t.budget,f:s.f+t.fee}},{b:0,f:0});
-  const grandAcq=prevAcquisi.reduce((s,d)=>{const t=recTotals(d);return{b:s.b+t.budget,f:s.f+t.fee}},{b:0,f:0});
-
-  const kpi=(lbl,val)=>`<div><div style="font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">${lbl}</div><div style="font-size:.95rem;font-weight:700">${eur(val)}</div></div>`;
-  const kpiTot=(lbl,val,col)=>`<div style="border-left:2px solid ${col}40;padding-left:1rem"><div style="font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">${lbl}</div><div style="font-size:1.05rem;font-weight:800;color:${col}">${eur(val)}</div></div>`;
-
-  el('report-body').innerHTML=`
-    <div style="font-size:.79rem;color:var(--muted);margin-bottom:.85rem">
-      Periodo: <strong style="color:var(--text)">${periodoLabel}</strong>
-      &nbsp;·&nbsp; <span style="color:#C08010;font-weight:600">${prevAttesa.length} in attesa</span>
-      &nbsp;·&nbsp; <span style="color:#0D7A70;font-weight:600">${prevAcquisi.length} acquisiti</span>
-      &nbsp;·&nbsp; ${prevPersi.length} persi
-    </div>
-
-    <!-- N4S -->
+  // ── Section block builder ────────────────────────────────────────
+  const section = (icon, title, desc, content) => `
     <div class="report-section">
-      <div class="rs-header"><span class="rs-icon">🎯</span><span class="rs-label">N4S</span></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0">
-        <div style="padding:.8rem 1.2rem;border-right:1px solid var(--b1)">
-          <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#C08010;margin-bottom:.55rem">⏳ In Attesa</div>
-          ${n4sAtt.budget+n4sAtt.fee>0
-            ?`<div style="display:flex;gap:1.5rem;flex-wrap:wrap">${kpi('Budget',n4sAtt.budget)}${kpi('Fee',n4sAtt.fee)}${kpiTot('Totale',n4sAtt.budget+n4sAtt.fee,'#C08010')}</div>`
-            :'<span style="color:var(--muted);font-size:.82rem">—</span>'}
-        </div>
-        <div style="padding:.8rem 1.2rem">
-          <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#0D7A70;margin-bottom:.55rem">✅ Acquisiti</div>
-          ${n4sAcq.budget+n4sAcq.fee>0
-            ?`<div style="display:flex;gap:1.5rem;flex-wrap:wrap">${kpi('Budget',n4sAcq.budget)}${kpi('Fee',n4sAcq.fee)}${kpiTot('Totale',n4sAcq.budget+n4sAcq.fee,'#0D7A70')}</div>`
-            :'<span style="color:var(--muted);font-size:.82rem">—</span>'}
-        </div>
+      <div class="rs-header">
+        <span class="rs-icon">${icon}</span>
+        <div><div class="rs-label">${title}</div>${desc?`<div class="rs-hint">${desc}</div>`:''}</div>
+      </div>
+      <div class="rs-body">${content}</div>
+    </div>`;
+
+  // ── GROUP block: In Attesa or Acquisiti ──────────────────────────
+  const group = (label, color, icon, prev, agg, n4s, plat, oth, totVal, uncatK) => {
+    if(!prev.length) return '';
+    const uncatRows = uncatK.flatMap(c => agg[c]?[{canale:c,...agg[c]}]:[]);
+    return `
+    <div class="rep-group" style="--gc:${color}">
+      <div class="rep-group-header">
+        <span class="rep-group-icon">${icon}</span>
+        <div class="rep-group-title">${label}</div>
+        <div class="rep-group-count">${prev.length} prospect</div>
+        <div class="rep-group-total">${eur(totVal)}</div>
+      </div>
+
+      ${section('🎯','N4S','',
+        n4s.budget+n4s.fee > 0
+          ? `<div class="rep-n4s-row">
+              <div class="rep-n4s-stat"><span class="rep-kpi-lbl">Budget</span><span class="rep-kpi-val">${eur(n4s.budget)}</span></div>
+              <div class="rep-n4s-stat"><span class="rep-kpi-lbl">Fee</span><span class="rep-kpi-val">${eur(n4s.fee)}</span></div>
+              <div class="rep-n4s-stat rep-kpi-tot"><span class="rep-kpi-lbl">Totale</span><span class="rep-kpi-val" style="color:${color};font-weight:800">${eur(n4s.budget+n4s.fee)}</span></div>
+              <div class="rep-n4s-stat"><span class="rep-kpi-lbl">Prospect</span><span class="rep-kpi-val">${n4s.n||'—'}</span></div>
+            </div>`
+          : '<div class="rep-empty-small">Nessun dato N4S</div>'
+      )}
+
+      ${section('📡','Canali Piattaforma','SEM · Meta Performance · Meta Organico · LinkedIn Performance · LinkedIn Organico',
+        repSection(prev, CAT_PLATFORM, false)
+      )}
+
+      ${section('💼','Altri Canali','DEM · Native · Affiliazione · SEO · SMS · Call Center · Consulenza',
+        repSection(prev, CAT_OTHER, true)
+      )}
+
+      ${uncatRows.length ? section('📦','Canali non categorizzati','',
+        repSection(prev, uncatK, false)
+      ) : ''}
+
+      <div class="rep-group-summary">
+        <div class="rep-sum-item"><span class="rep-kpi-lbl">N4S</span><strong>${eur(n4s.budget+n4s.fee)}</strong></div>
+        <div class="rep-sum-item"><span class="rep-kpi-lbl">Piattaforma</span><strong>${eur(plat.budget+plat.fee)}</strong></div>
+        <div class="rep-sum-item"><span class="rep-kpi-lbl">Fee altri canali</span><strong>${eur(oth.fee)}</strong></div>
+        <div class="rep-sum-item rep-sum-tot"><span class="rep-kpi-lbl">TOTALE</span><strong style="color:${color};font-size:1.05rem">${eur(totVal)}</strong></div>
+      </div>
+    </div>`;
+  };
+
+  el('report-body').innerHTML = `
+    <div class="rep-header-bar">
+      <div><span class="rep-periodo">${periodo}</span></div>
+      <div class="rep-header-stats">
+        <span style="color:#C08010"><strong>${attesa.length}</strong> in attesa</span>
+        <span style="color:#0D7A70"><strong>${acquisiti.length}</strong> acquisiti</span>
+        <span style="color:var(--muted)">${persi.length} persi</span>
       </div>
     </div>
 
-    <!-- PIATTAFORMA -->
-    <div class="report-section">
-      <div class="rs-header"><span class="rs-icon">📡</span><span class="rs-label">Canali Piattaforma</span><span class="rs-desc">SEM · Meta · LinkedIn · N° = prospect unici con quel canale</span></div>
-      ${repSection(prevAttesa,prevAcquisi,CAT_PLATFORM,false)}
-    </div>
-
-    <!-- ALTRI -->
-    <div class="report-section">
-      <div class="rs-header"><span class="rs-icon">💼</span><span class="rs-label">Altri Canali</span><span class="rs-desc">DEM · Native · Affiliazione · SEO · SMS · Call Center · Consulenza · N° = prospect unici</span></div>
-      ${repSection(prevAttesa,prevAcquisi,CAT_OTHER,true)}
-    </div>
-
-    ${uncatKeys.length?`<div class="report-section"><div class="rs-header"><span class="rs-icon">📦</span><span class="rs-label">Altri canali</span></div>${repSection(prevAttesa,prevAcquisi,uncatKeys,false)}</div>`:''}
-
-    <!-- RIEPILOGO -->
-    <div class="report-recap">
-      <div class="report-recap-title">Riepilogo — ${periodoLabel}</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
-        <div style="background:rgba(192,128,16,.07);border:1px solid rgba(192,128,16,.22);border-radius:8px;padding:.9rem 1.2rem">
-          <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#C08010;margin-bottom:.65rem">⏳ In Attesa — ${prevAttesa.length} prospect</div>
-          <div style="display:flex;gap:1.5rem;flex-wrap:wrap">
-            ${kpi('N4S',n4sAtt.budget+n4sAtt.fee)}
-            ${kpi('Piattaforma',platAtt.budget+platAtt.fee)}
-            ${kpi('Fee altri',othAtt.fee)}
-            ${kpiTot('Totale',grandAtt.b+grandAtt.f,'#C08010')}
-          </div>
-        </div>
-        <div style="background:rgba(13,122,112,.06);border:1px solid rgba(13,122,112,.22);border-radius:8px;padding:.9rem 1.2rem">
-          <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#0D7A70;margin-bottom:.65rem">✅ Acquisiti — ${prevAcquisi.length} prospect</div>
-          <div style="display:flex;gap:1.5rem;flex-wrap:wrap">
-            ${kpi('N4S',n4sAcq.budget+n4sAcq.fee)}
-            ${kpi('Piattaforma',platAcq.budget+platAcq.fee)}
-            ${kpi('Fee altri',othAcq.fee)}
-            ${kpiTot('Totale',grandAcq.b+grandAcq.f,'#0D7A70')}
-          </div>
-        </div>
-      </div>
-    </div>
+    ${group('In Attesa','#C08010','⏳', attesa,  aggAtt, n4sAtt, platAtt, othAtt, totAtt, uncatKeys)}
+    ${group('Acquisiti', '#0D7A70','✅', acquisiti, aggAcq, n4sAcq, platAcq, othAcq, totAcq, uncatKeys)}
+    ${persi.length ? `<div style="background:rgba(184,32,32,.05);border:1px solid rgba(184,32,32,.15);border-radius:10px;padding:.9rem 1.2rem;margin-top:1rem;font-size:.82rem;color:var(--rose)">
+      <strong>${persi.length}</strong> preventivi persi nel periodo selezionato — non inclusi nei totali sopra.
+    </div>` : ''}
   `;
 }
 
