@@ -281,6 +281,91 @@ table.rep-tbl tr.tot-row td{background:var(--s2);font-weight:700;color:var(--tex
 .recap-item .rv{font-family:var(--display);font-size:1.35rem;font-weight:700;color:var(--text)}
 .recap-item .rl{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:.18rem}
 
+
+/* ── CLIENTI ─────────────────────────── */
+.tabs-divider{width:1px;background:var(--b2);margin:8px 0;flex-shrink:0}
+.tab.client-tab{color:var(--blue);border-bottom-color:transparent}
+.tab.client-tab:hover{color:var(--blue)}
+.tab.client-tab.on{color:var(--blue);border-bottom-color:var(--blue)}
+
+/* Client list */
+.client-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1rem;padding:.5rem 0}
+.client-card{background:var(--s1);border:1px solid var(--b1);border-radius:10px;padding:1.2rem 1.4rem;cursor:pointer;transition:all .16s;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.client-card:hover{border-color:var(--blue);box-shadow:0 3px 12px rgba(30,95,204,.1);transform:translateY(-1px)}
+.client-card-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:.85rem}
+.client-name{font-family:var(--display);font-size:1rem;font-weight:700}
+.client-comm{font-size:.76rem;color:var(--muted);margin-top:.15rem}
+.client-stato{display:inline-block;padding:.18rem .6rem;border-radius:20px;font-size:.68rem;font-weight:700}
+.cs-attivo{background:rgba(13,122,112,.1);color:#0D7A70;border:1px solid rgba(13,122,112,.25)}
+.cs-pausa{background:rgba(200,134,10,.1);color:#C08010;border:1px solid rgba(200,134,10,.25)}
+.cs-concluso{background:rgba(100,100,120,.1);color:#606080;border:1px solid rgba(100,100,120,.2)}
+.cs-rinnovato{background:rgba(30,95,204,.1);color:#1E5FCC;border:1px solid rgba(30,95,204,.25)}
+.client-kpi-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem;margin-bottom:.85rem}
+.client-kpi{text-align:center;background:var(--s2);border-radius:6px;padding:.5rem .4rem}
+.client-kpi-val{font-size:.88rem;font-weight:700;color:var(--text)}
+.client-kpi-lbl{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-top:.1rem}
+.client-progress{height:6px;background:var(--s3);border-radius:3px;overflow:hidden;margin-bottom:.5rem}
+.client-progress-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--blue),var(--teal));transition:width .4s}
+.client-progress-fill.warn{background:linear-gradient(90deg,#C08010,#E8A020)}
+.client-progress-fill.danger{background:linear-gradient(90deg,var(--rose),#E05050)}
+.client-progress-labels{display:flex;justify-content:space-between;font-size:.7rem;color:var(--muted)}
+.client-tags{display:flex;gap:.4rem;flex-wrap:wrap}
+.client-tag{background:var(--s3);border:1px solid var(--b1);border-radius:12px;font-size:.68rem;padding:.12rem .5rem;color:var(--muted)}
+.client-alert{background:rgba(184,32,32,.08);border:1px solid rgba(184,32,32,.2);border-radius:6px;font-size:.74rem;color:var(--rose);padding:.35rem .65rem;margin-top:.65rem;display:flex;align-items:center;gap:.4rem}
+
+/* Client detail / form */
+.client-detail-wrap{flex:1;overflow-y:auto;min-height:0}
+.client-detail{max-width:1100px}
+.client-detail-header{display:flex;align-items:center;gap:1rem;margin-bottom:1.4rem}
+.client-detail-title{font-family:var(--display);font-size:1.5rem;font-weight:800}
+.btn-back{background:var(--s2);border:1px solid var(--b1);border-radius:var(--r);padding:.4rem .9rem;font-size:.8rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:.4rem;transition:all .16s}
+.btn-back:hover{border-color:var(--blue);color:var(--blue)}
+
+/* Contracts */
+.contract-block{background:var(--s1);border:1px solid var(--b1);border-radius:10px;margin-bottom:1rem;overflow:hidden}
+.contract-header{display:flex;align-items:center;gap:.85rem;padding:.9rem 1.2rem;background:var(--s2);border-bottom:1px solid var(--b1)}
+.contract-num{font-family:var(--display);font-size:.85rem;font-weight:700;background:var(--blue);color:#fff;border-radius:20px;padding:.15rem .65rem}
+.contract-title{font-size:.9rem;font-weight:600;flex:1}
+.contract-dates{font-size:.76rem;color:var(--muted)}
+.contract-valore{font-size:.9rem;font-weight:700}
+.contract-body{padding:1.1rem 1.2rem}
+
+/* Channel rows in contract */
+.ch-rows{border:1px solid var(--b1);border-radius:8px;overflow:hidden;margin-bottom:1rem}
+.ch-header{display:grid;grid-template-columns:140px 95px 95px 95px 95px 1fr;background:var(--s2);border-bottom:1px solid var(--b1)}
+.ch-header span{padding:.45rem .7rem;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);border-right:1px solid var(--b1)}
+.ch-header span:last-child{border-right:none}
+.ch-row{display:grid;grid-template-columns:140px 95px 95px 95px 95px 1fr;border-top:1px solid var(--b1);align-items:center}
+.ch-row:first-of-type{border-top:none}
+.ch-cell{padding:.55rem .7rem;font-size:.82rem;border-right:1px solid var(--b1)}
+.ch-cell:last-child{border-right:none}
+.ch-cell.num{text-align:right;font-variant-numeric:tabular-nums}
+.ch-bar-wrap{height:5px;background:var(--s3);border-radius:3px;margin-top:.25rem;overflow:hidden}
+.ch-bar{height:100%;border-radius:3px}
+
+/* Log entries */
+.log-list{display:flex;flex-direction:column;gap:.6rem;margin-bottom:1rem}
+.log-entry{display:flex;gap:.75rem;padding:.7rem .9rem;background:var(--s2);border-radius:8px;border:1px solid var(--b1)}
+.log-date{font-size:.74rem;color:var(--muted);white-space:nowrap;min-width:72px}
+.log-text{font-size:.82rem;line-height:1.5}
+
+/* Monthly billing */
+.billing-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:.6rem;margin-bottom:1rem}
+.billing-month{background:var(--s2);border:1px solid var(--b1);border-radius:8px;padding:.65rem .8rem;text-align:center}
+.billing-month-lbl{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.3rem}
+.billing-month-val{font-size:.88rem;font-weight:700}
+.billing-month-val.zero{color:var(--dim)}
+
+/* Client report */
+.client-rep-card{background:var(--s1);border:1px solid var(--b1);border-radius:10px;padding:1.2rem 1.4rem;margin-bottom:1rem}
+.client-rep-name{font-family:var(--display);font-size:1rem;font-weight:700;margin-bottom:.85rem}
+.crep-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.85rem;margin-bottom:.75rem}
+.crep-kpi{background:var(--s2);border-radius:8px;padding:.75rem .9rem;text-align:center}
+.crep-kpi-val{font-size:.95rem;font-weight:800;color:var(--text)}
+.crep-kpi-lbl{font-size:.67rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:.15rem}
+.gap-positive{color:var(--teal)!important}
+.gap-negative{color:var(--rose)!important}
+
 /* ── CONSULTA ───────────────────────── */
 .consulta-wrap{max-width:820px;flex:1;overflow-y:auto}
 .query-box{display:flex;gap:.7rem;margin-bottom:1.2rem}
@@ -423,6 +508,9 @@ table.q-tbl tr.tot-row td{background:var(--s2);font-weight:700;color:var(--gold2
     <div class="tab"    id="tab-dash"     onclick="goTab('dash')">📊 Dashboard</div>
     <div class="tab"    id="tab-consulta" onclick="goTab('consulta')">🔍 Consulta</div>
     <div class="tab"    id="tab-new"      onclick="goTab('new')">＋ Nuovo Preventivo</div>
+    <div class="tabs-divider"></div>
+    <div class="tab client-tab" id="tab-clienti"       onclick="goTab('clienti')">👥 Clienti</div>
+    <div class="tab client-tab" id="tab-reportclienti" onclick="goTab('reportclienti')">📊 Report Clienti</div>
   </div>
   <main>
 
@@ -488,6 +576,36 @@ table.q-tbl tr.tot-row td{background:var(--s2);font-weight:700;color:var(--gold2
           <div class="qr-body" id="qr-body"></div>
         </div>
       </div>
+    </div>
+
+    <!-- CLIENTI LIST -->
+    <div id="view-clienti" class="hidden" style="display:none;flex-direction:column;flex:1;min-height:0">
+      <div class="tbl-toolbar" style="flex-shrink:0">
+        <span class="tbl-info" id="clienti-info"></span>
+        <div style="flex:1"></div>
+        <select id="f-clienti-stato" class="f-sel" onchange="renderClienti()" style="width:auto;min-width:140px">
+          <option value="">Tutti gli stati</option>
+          <option>Attivo</option><option>In Pausa</option><option>Concluso</option><option>Rinnovato</option>
+        </select>
+        <select id="f-clienti-comm" class="f-sel" onchange="renderClienti()" style="width:auto;min-width:130px">
+          <option value="">Tutti i commerciali</option>
+          <option>Marrone</option><option>Fiorelli</option><option>Mastrorillo</option><option>Lomazzo</option>
+        </select>
+        <button class="btn btn-ghost btn-sm" onclick="loadData()">↻</button>
+      </div>
+      <div style="flex:1;overflow-y:auto;min-height:0">
+        <div class="client-grid" id="clienti-grid"></div>
+      </div>
+    </div>
+
+    <!-- CLIENTE DETAIL -->
+    <div id="view-cliente-detail" class="hidden" style="display:none;flex:1;overflow-y:auto">
+      <div class="client-detail" id="cliente-detail-body"></div>
+    </div>
+
+    <!-- REPORT CLIENTI -->
+    <div id="view-reportclienti" class="hidden" style="display:none;flex-direction:column;flex:1;min-height:0">
+      <div style="flex:1;overflow-y:auto;min-height:0;padding:.5rem 0" id="report-clienti-body"></div>
     </div>
 
     <!-- FORM -->
@@ -701,15 +819,15 @@ function makeBreakdownTip(righe){
     const b=num(r.budget),f=num(r.fee),s=num(r.setup||0);
     const tot=b+f+s;
     if(!r.canale&&!b&&!f&&!s)return null;
-    let desc=`<b>${r.canale||'—'}</b>`;
-    if(r.qty&&r.prezzo) desc+=` — ${fmtN(r.qty)} × €${fmtN(r.prezzo)} ${r.tipoPay||''}`;
-    if(b>0) desc+=`\n  Budget: <b>€${fmtN(b)}</b>`;
-    if(f>0) desc+=`\n  Fee: <b>€${fmtN(f)}</b>`;
-    if(s>0) desc+=`\n  Setup: <b>€${fmtN(s)}</b>`;
-    if(tot>0) desc+=`\n  Totale riga: <b>€${fmtN(tot)}</b>`;
-    return desc;
+    const parts=[`<b>${r.canale||'—'}</b>`];
+    if(r.qty&&r.prezzo) parts.push(` ${fmtN(r.qty)} × €${fmtN(r.prezzo)} ${r.tipoPay||''}`);
+    if(b>0) parts.push(`Budget: <b>€${fmtN(b)}</b>`);
+    if(f>0) parts.push(`Fee: <b>€${fmtN(f)}</b>`);
+    if(s>0) parts.push(`Setup: <b>€${fmtN(s)}</b>`);
+    if(tot>0) parts.push(`Totale: <b>€${fmtN(tot)}</b>`);
+    return parts.join(' · ');
   }).filter(Boolean);
-  return lines.length?'<div class="tip-breakdown">'+lines.join('<hr style="border:none;border-top:1px solid rgba(255,255,255,.15);margin:.35rem 0">')+'</div>':null;
+  return lines.length?'<div class="tip-breakdown">'+lines.join('<br>')+'</div>':null;
 }
 
 function toast(msg,type='ok'){const t=document.createElement('div');t.className='toast '+(type==='ok'?'ok':'err');t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),4000)}
@@ -865,13 +983,9 @@ async function writeFile(d){const t=await tok();const ref=await getRef();const r
 // ══════════════════════════════════════════════════
 // DATI
 // ══════════════════════════════════════════════════
-async function loadData(){
-  el('tbl-body').innerHTML='<div class="loading"><div class="spin"></div>Caricamento...</div>';
-  try{data=await readFile();populateYears();renderAll()}
-  catch(e){toast(e.message,'err');el('tbl-body').innerHTML=`<div class="empty"><div class="empty-ico">⚠️</div>${e.message}</div>`}
-}
-async function saveRecord(rec,isNew){if(isNew){rec.createdAt=now();data.unshift(rec)}else{const i=data.findIndex(x=>x.id===rec.id);if(i>=0)data[i]={...data[i],...rec,updatedAt:now()}}await writeFile(data)}
-async function deleteRecord(id){if(!confirm('Eliminare definitivamente questo preventivo?'))return;data=data.filter(x=>x.id!==id);try{await writeFile(data);toast('Eliminato','ok');hide('det-overlay');renderAll()}catch(e){toast(e.message,'err')}}
+// loadData defined in CRM section
+// saveRecord defined in CRM section
+// deleteRecord defined in CRM section
 function populateYears(){const yrs=[...new Set(data.map(d=>d.dataUscita?.slice(0,4)).filter(Boolean))].sort().reverse();el('r-anno').innerHTML='<option value="">Tutti</option>'+yrs.map(y=>`<option>${y}</option>`).join('')}
 
 // ══════════════════════════════════════════════════
@@ -900,18 +1014,24 @@ function downloadStarter(){const a=document.createElement('a');a.href='data:appl
 // ══════════════════════════════════════════════════
 function goTab(t){
   curTab=t;
-  ['dash','pipe','all','report','consulta','new'].forEach(x=>el('tab-'+x).classList.toggle('on',x===t));
-  ['dash','table','report','consulta','new'].forEach(x=>{
+  ['dash','pipe','all','report','consulta','new','clienti','reportclienti'].forEach(x=>{
+    const tab=el('tab-'+x);
+    if(tab) tab.classList.toggle('on',x===t);
+  });
+  ['dash','table','report','consulta','new','clienti','cliente-detail','reportclienti'].forEach(x=>{
     const v=el('view-'+x);
     if(v){v.classList.add('hidden');v.style.display='none'}
   });
-  const show_id='view-'+{dash:'dash',pipe:'table',all:'table',report:'report',consulta:'consulta',new:'new'}[t];
-  const v=el(show_id);
+  const viewMap={dash:'dash',pipe:'table',all:'table',report:'report',consulta:'consulta',new:'new',clienti:'clienti',reportclienti:'reportclienti'};
+  const vid='view-'+(viewMap[t]||t);
+  const v=el(vid);
   if(v){v.classList.remove('hidden');v.style.display='flex';v.style.flexDirection='column'}
-  if(t==='dash'){renderDash()}
-  else if(t==='pipe'||t==='all'){renderTable()}
-  else if(t==='report'){renderReport()}
-  else if(t==='consulta'){buildExamples()}
+  if(t==='dash')          renderDash();
+  else if(t==='pipe'||t==='all') renderTable();
+  else if(t==='report')   renderReport();
+  else if(t==='consulta') buildExamples();
+  else if(t==='clienti')  renderClienti();
+  else if(t==='reportclienti') renderReportClienti();
 }
 
 // ══════════════════════════════════════════════════
@@ -974,7 +1094,7 @@ const COLS=[
   {k:'_totriga',l:'Tot. Riga €',f:'none',w:'90px'},
   {k:'_statocanale',l:'Stato',f:'select',w:'90px',opts:STATI_CANALE},
   {k:'pctSuccesso',l:'% Succ.',f:'none',w:'62px'},
-  {k:'stato',l:'Stato Gen.',f:'select',w:'90px',opts:['In Attesa','Acquisito','Perso']},
+
   {k:'feedback',l:'Feedback',f:'select',w:'105px',opts:['Attesa feedback','Vendita','Rifiutato']},
   {k:'dataAccettazione',l:'Acc.',f:'text',w:'78px'},
   {k:'dataUltimoFeedback',l:'Ult.Feedback',f:'text',w:'82px'},
@@ -1039,12 +1159,12 @@ function getFiltered(){
 
 function onColFilter(k,v){if(v)colFilters[k]=v;else delete colFilters[k];renderTable();el('btn-reset').classList.toggle('visible',Object.keys(colFilters).length>0||dateFilter.mese||dateFilter.from||dateFilter.to)}
 function onDateFilter(field,v){dateFilter[field]=v;renderTable();el('btn-reset').classList.toggle('visible',Object.keys(colFilters).length>0||dateFilter.mese||dateFilter.from||dateFilter.to)}
-function resetFilters(){
+var resetFilters=function(){
   colFilters={};dateFilter={mese:'',from:'',to:''};
   el('btn-reset').classList.remove('visible');
   document.querySelectorAll('.hf input,.hf select').forEach(i=>i.value='');
   renderTable();
-}
+};
 function setSort(k){if(sortF===k)sortD*=-1;else{sortF=k;sortD=1}renderTable()}
 
 function renderTable(){
@@ -1059,7 +1179,7 @@ function renderTable(){
   // Colonne: [prospect-sx] | [canale] [budget] [fee] [totriga] [statocanale] | [prospect-dx] | [TOT.PREV] | [azioni]
   const PCOLS_L = ['commerciale','dataUscita','prospect','verticale','fonte'];
   const CCOLS   = ['_canale','_budget','_fee','_totriga','_statocanale'];
-  const PCOLS_R = ['pctSuccesso','stato','feedback','dataAccettazione','dataUltimoFeedback','timing','noteVarie','settimana'];
+  const PCOLS_R = ['pctSuccesso','feedback','dataAccettazione','dataUltimoFeedback','timing','noteVarie','settimana'];
 
   const CCOLS_WITH_TOT = [...CCOLS,'_totprev'];
   const allColsOrdered = [...PCOLS_L,...CCOLS_WITH_TOT,...PCOLS_R];
@@ -1152,7 +1272,7 @@ function renderTable(){
       // Colonne prospect destra — solo prima riga, rowspan
       const prospectRCells = isFirst ? [
         `<td rowspan="${n}" style="vertical-align:middle">${d.pctSuccesso!==undefined&&d.pctSuccesso!==''?`<div class="pct-w"><span style="font-size:.76rem">${d.pctSuccesso}%</span><div class="pct-bar"><div class="pct-fill" style="width:${d.pctSuccesso}%"></div></div></div>`:'—'}</td>`,
-        `<td rowspan="${n}" style="vertical-align:middle"><span class="${badgeCls(d.stato)}">${d.stato||'In Attesa'}</span></td>`,
+
         `<td rowspan="${n}" style="vertical-align:middle">${feedbackBadge(d.feedback)}</td>`,
         `<td rowspan="${n}" style="vertical-align:middle">${fmtDate(d.dataAccettazione)}</td>`,
         `<td rowspan="${n}" style="vertical-align:middle">${fmtDate(d.dataUltimoFeedback)}</td>`,
@@ -1514,6 +1634,580 @@ async function submitForm(e){
   catch(err){toast('Errore: '+err.message,'err');btn.disabled=false;btn.textContent='💾 Salva Preventivo'}
 }
 
+
+// ══════════════════════════════════════════════════
+// CRM CLIENTI
+// ══════════════════════════════════════════════════
+
+// Struttura cliente: {id, prevId, nome, commerciale, stato, contratti, log, billing}
+// Struttura file dati: preventivi array + clienti array
+
+// ── Migrazione dati ────────────────────────────────
+function migraData(raw){
+  if(Array.isArray(raw)) return {preventivi: raw, clienti: []};
+  return {preventivi: raw.preventivi||[], clienti: raw.clienti||[]};
+}
+
+let clientiData = [];
+
+async function loadData(){
+  el('tbl-body').innerHTML='<div class="loading"><div class="spin"></div>Caricamento...</div>';
+  try{
+    const raw = await readFile();
+    const parsed = migraData(raw);
+    data = parsed.preventivi;
+    clientiData = parsed.clienti;
+    populateYears();
+    renderAll();
+    if(curTab==='clienti') renderClienti();
+    if(curTab==='reportclienti') renderReportClienti();
+  }catch(e){
+    toast(e.message,'err');
+    el('tbl-body').innerHTML=`<div class="empty"><div class="empty-ico">⚠️</div>${e.message}</div>`;
+  }
+}
+
+async function saveAll(){
+  await writeFile({preventivi: data, clienti: clientiData});
+}
+
+// Override saveRecord to use new format
+async function saveRecord(rec, isNew){
+  if(isNew){ rec.createdAt=now(); data.unshift(rec); }
+  else{ const i=data.findIndex(x=>x.id===rec.id); if(i>=0) data[i]={...data[i],...rec,updatedAt:now()}; }
+  await saveAll();
+}
+
+async function deleteRecord(id){
+  if(!confirm('Eliminare definitivamente questo preventivo?')) return;
+  data=data.filter(x=>x.id!==id);
+  try{ await saveAll(); toast('Eliminato','ok'); hide('det-overlay'); renderAll(); }
+  catch(e){ toast(e.message,'err'); }
+}
+
+// ── Crea cliente da preventivo ─────────────────────
+function creaClienteDaPreventivo(prev){
+  if(!confirm(`Creare la scheda cliente per "${prev.prospect}"?\\nI dati del contratto verranno ereditati dal preventivo.`)) return;
+  const exists = clientiData.find(c=>c.prevId===prev.id);
+  if(exists){ toast('Scheda cliente già esistente','err'); openClienteDetail(exists.id); return; }
+
+  const contratto = {
+    id: uuid(),
+    num: 1,
+    dataInizio: '',
+    dataFine: '',
+    dataFirma: prev.dataAccettazione || '',
+    canali: (prev.righe||[]).filter(r=>r.canale).map(r=>({
+      canale: r.canale,
+      valoreContratto: num(r.budget)+num(r.fee)+num(r.setup||0),
+      erogato: 0,
+      note: r.desc||''
+    })),
+    noteContratto: ''
+  };
+
+  const cliente = {
+    id: uuid(),
+    prevId: prev.id,
+    nome: prev.prospect,
+    commerciale: prev.commerciale,
+    verticale: prev.verticale||'',
+    stato: 'Attivo',
+    contratti: [contratto],
+    billing: {},   // {'2025-01': 1000, '2025-02': 2000, ...}
+    log: [],
+    createdAt: now()
+  };
+
+  clientiData.push(cliente);
+  saveAll().then(()=>{
+    toast('✓ Scheda cliente creata','ok');
+    openClienteDetail(cliente.id);
+  }).catch(e=>toast(e.message,'err'));
+}
+
+// ── Totali cliente ─────────────────────────────────
+function clienteTotals(c){
+  const contrValore = c.contratti.reduce((s,ct)=>
+    s + ct.canali.reduce((cs,ch)=>cs+num(ch.valoreContratto),0), 0);
+  const erogato = c.contratti.reduce((s,ct)=>
+    s + ct.canali.reduce((cs,ch)=>cs+num(ch.erogato),0), 0);
+  const fatturato = Object.values(c.billing||{}).reduce((s,v)=>s+num(v),0);
+  const gap = contrValore - fatturato;
+  const pct = contrValore>0 ? Math.round(erogato/contrValore*100) : 0;
+  return {contrValore, erogato, fatturato, gap, pct};
+}
+
+function deliveryAlert(c){
+  const {contrValore, erogato, pct} = clienteTotals(c);
+  if(!contrValore) return null;
+  // Calcola % tempo trascorso sul contratto attivo
+  const attivo = c.contratti.find(ct=>ct.dataInizio&&ct.dataFine);
+  if(!attivo) return null;
+  const start=new Date(attivo.dataInizio+'T00:00:00'), end=new Date(attivo.dataFine+'T23:59:59'), now2=new Date();
+  if(now2<start||now2>end) return null;
+  const pctTempo = Math.round((now2-start)/(end-start)*100);
+  const gap = pctTempo - pct;
+  if(gap>20) return `Delivery in ritardo: ${pct}% erogato, ${pctTempo}% del contratto trascorso`;
+  return null;
+}
+
+// ── RENDER LISTA CLIENTI ───────────────────────────
+function renderClienti(){
+  const statoF = el('f-clienti-stato').value;
+  const commF  = el('f-clienti-comm').value;
+  let list = clientiData.filter(c=>{
+    if(statoF && c.stato!==statoF) return false;
+    if(commF  && c.commerciale!==commF) return false;
+    return true;
+  });
+
+  el('clienti-info').textContent = `${list.length} client${list.length===1?'e':'i'}`;
+
+  if(!list.length){
+    el('clienti-grid').innerHTML='<div class="empty" style="grid-column:1/-1"><div class="empty-ico">👥</div>Nessun cliente trovato.<br><small style="color:var(--dim)">I clienti vengono creati dalla scheda preventivo quando lo stato passa ad Acquisito.</small></div>';
+    return;
+  }
+
+  el('clienti-grid').innerHTML = list.map(c=>{
+    const {contrValore,erogato,fatturato,gap,pct} = clienteTotals(c);
+    const alert = deliveryAlert(c);
+    const pctFill = Math.min(pct,100);
+    const barCls = pct<50?'danger':pct<80?'warn':'';
+    const statoMap={'Attivo':'cs-attivo','In Pausa':'cs-pausa','Concluso':'cs-concluso','Rinnovato':'cs-rinnovato'};
+    const canaliNomi=[...new Set(c.contratti.flatMap(ct=>ct.canali.map(ch=>ch.canale)))].filter(Boolean);
+    return `<div class="client-card" onclick="openClienteDetail('${c.id}')">
+      <div class="client-card-header">
+        <div>
+          <div class="client-name">${c.nome}</div>
+          <div class="client-comm">${c.commerciale||'—'} ${c.verticale?'· '+c.verticale:''}</div>
+        </div>
+        <span class="client-stato ${statoMap[c.stato]||'cs-attivo'}">${c.stato}</span>
+      </div>
+      <div class="client-kpi-row">
+        <div class="client-kpi">
+          <div class="client-kpi-val">${eur(contrValore)}</div>
+          <div class="client-kpi-lbl">Contratto</div>
+        </div>
+        <div class="client-kpi">
+          <div class="client-kpi-val">${eur(fatturato)}</div>
+          <div class="client-kpi-lbl">Fatturato</div>
+        </div>
+        <div class="client-kpi">
+          <div class="client-kpi-val" style="color:${gap>0?'var(--blue)':'var(--teal)'}">${eur(Math.abs(gap))}</div>
+          <div class="client-kpi-lbl">${gap>0?'Da fatturare':'Extra'}</div>
+        </div>
+      </div>
+      <div class="client-progress">
+        <div class="client-progress-fill ${barCls}" style="width:${pctFill}%"></div>
+      </div>
+      <div class="client-progress-labels">
+        <span>Delivery: ${pct}%</span>
+        <span>${eur(erogato)} / ${eur(contrValore)}</span>
+      </div>
+      ${canaliNomi.length?`<div class="client-tags" style="margin-top:.65rem">${canaliNomi.slice(0,4).map(n=>`<span class="client-tag">${n}</span>`).join('')}${canaliNomi.length>4?`<span class="client-tag">+${canaliNomi.length-4}</span>`:''}</div>`:''}
+      ${alert?`<div class="client-alert">⚠ ${alert}</div>`:''}
+    </div>`;
+  }).join('');
+}
+
+// ── DETAIL CLIENTE ─────────────────────────────────
+function openClienteDetail(id){
+  const c = clientiData.find(x=>x.id===id);
+  if(!c) return;
+  curClienteId = id;
+
+  // Hide grid, show detail
+  el('view-clienti').classList.add('hidden'); el('view-clienti').style.display='none';
+  const dv = el('view-cliente-detail');
+  dv.classList.remove('hidden'); dv.style.display='flex'; dv.style.flexDirection='column';
+
+  renderClienteDetail(c);
+}
+
+let curClienteId = null;
+
+function renderClienteDetail(c){
+  const {contrValore,erogato,fatturato,gap,pct} = clienteTotals(c);
+  const statoMap={'Attivo':'cs-attivo','In Pausa':'cs-pausa','Concluso':'cs-concluso','Rinnovato':'cs-rinnovato'};
+  const mesiNames=['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'];
+
+  const contractsHTML = c.contratti.map((ct,ci)=>{
+    const totContr = ct.canali.reduce((s,ch)=>s+num(ch.valoreContratto),0);
+    const totErog  = ct.canali.reduce((s,ch)=>s+num(ch.erogato),0);
+    return `<div class="contract-block">
+      <div class="contract-header">
+        <span class="contract-num">Contratto ${ci+1}</span>
+        <div class="contract-title">${ct.noteContratto||'Contratto'}</div>
+        <span class="contract-dates">
+          ${ct.dataFirma?'Firmato: '+fmtDate(ct.dataFirma):''}
+          ${ct.dataInizio?' · Inizio: '+fmtDate(ct.dataInizio):''}
+          ${ct.dataFine?' → Fine: '+fmtDate(ct.dataFine):''}
+        </span>
+        <span class="contract-valore">${eur(totContr)}</span>
+        <button class="btn btn-ghost btn-sm" onclick="editContratto('${c.id}','${ct.id}')">✏️ Modifica</button>
+      </div>
+      <div class="contract-body">
+        <div class="ch-rows">
+          <div class="ch-header">
+            <span>Canale</span><span>Contratto €</span><span>Erogato €</span>
+            <span>% Delivery</span><span>Gap €</span><span>Note</span>
+          </div>
+          ${ct.canali.map(ch=>{
+            const pctCh = num(ch.valoreContratto)>0?Math.round(num(ch.erogato)/num(ch.valoreContratto)*100):0;
+            const gapCh = num(ch.valoreContratto)-num(ch.erogato);
+            const barCol = pctCh<50?'var(--rose)':pctCh<80?'#C08010':'var(--teal)';
+            return `<div class="ch-row">
+              <div class="ch-cell"><strong>${ch.canale||'—'}</strong></div>
+              <div class="ch-cell num">${eur(ch.valoreContratto)}</div>
+              <div class="ch-cell num">${eur(ch.erogato)}</div>
+              <div class="ch-cell">
+                <div style="font-size:.8rem;font-weight:600">${pctCh}%</div>
+                <div class="ch-bar-wrap"><div class="ch-bar" style="width:${Math.min(pctCh,100)}%;background:${barCol}"></div></div>
+              </div>
+              <div class="ch-cell num" style="color:${gapCh>0?'var(--blue)':'var(--teal)'}">${eur(Math.abs(gapCh))}</div>
+              <div class="ch-cell" style="font-size:.78rem;color:var(--muted)">${ch.note||'—'}</div>
+            </div>`;
+          }).join('')}
+          <div class="ch-row" style="background:var(--s2);font-weight:700">
+            <div class="ch-cell">Totale</div>
+            <div class="ch-cell num">${eur(totContr)}</div>
+            <div class="ch-cell num">${eur(totErog)}</div>
+            <div class="ch-cell" style="font-size:.8rem;font-weight:700">${totContr>0?Math.round(totErog/totContr*100):0}%</div>
+            <div class="ch-cell num">${eur(totContr-totErog)}</div>
+            <div class="ch-cell"></div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Billing - last 12 months
+  const now2 = new Date();
+  const billingMonths = [];
+  for(let i=11;i>=0;i--){
+    const d=new Date(now2.getFullYear(),now2.getMonth()-i,1);
+    const key=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+    billingMonths.push({key, label:mesiNames[d.getMonth()]+' '+d.getFullYear().toString().slice(2)});
+  }
+
+  const billingHTML = `<div class="billing-grid">
+    ${billingMonths.map(m=>`
+      <div class="billing-month" onclick="editBilling('${c.id}','${m.key}','${m.label}')" style="cursor:pointer" title="Clicca per modificare">
+        <div class="billing-month-lbl">${m.label}</div>
+        <div class="billing-month-val ${!c.billing[m.key]?'zero':''}">${c.billing[m.key]?eur(c.billing[m.key]):'—'}</div>
+      </div>`).join('')}
+  </div>
+  <div style="font-size:.78rem;color:var(--muted);margin-bottom:.5rem">Clicca su un mese per inserire o modificare il fatturato.</div>`;
+
+  // Log
+  const logHTML = `
+    <div class="log-list">
+      ${(c.log||[]).slice().reverse().map(l=>`
+        <div class="log-entry">
+          <div class="log-date">${fmtDate(l.data)}</div>
+          <div class="log-text">${l.testo}</div>
+          <button class="btn btn-ghost btn-sm" onclick="deleteLog('${c.id}','${l.id}')" style="margin-left:auto;flex-shrink:0">×</button>
+        </div>`).join('') || '<div style="color:var(--muted);font-size:.82rem">Nessuna nota registrata.</div>'}
+    </div>
+    <div style="display:flex;gap:.65rem">
+      <input type="text" id="new-log-text" placeholder="Aggiungi nota comunicazione..." style="flex:1">
+      <input type="date" id="new-log-date" style="width:130px;color-scheme:light" value="${new Date().toISOString().slice(0,10)}">
+      <button class="btn btn-ghost btn-sm" onclick="addLog('${c.id}')">+ Aggiungi</button>
+    </div>`;
+
+  el('cliente-detail-body').innerHTML = `
+    <div class="client-detail">
+      <div class="client-detail-header">
+        <button class="btn-back" onclick="backToClienti()">← Clienti</button>
+        <div class="client-detail-title">${c.nome}</div>
+        <span class="client-stato ${statoMap[c.stato]||'cs-attivo'}" style="font-size:.8rem;padding:.25rem .8rem">${c.stato}</span>
+        <select onchange="updateClienteStato('${c.id}',this.value)" style="font-size:.8rem;padding:.3rem .7rem;border:1px solid var(--b1);border-radius:6px;background:var(--s1);color:var(--text)">
+          ${['Attivo','In Pausa','Concluso','Rinnovato'].map(s=>`<option ${s===c.stato?'selected':''} value="${s}">${s}</option>`).join('')}
+        </select>
+        <div style="flex:1"></div>
+        <div style="display:flex;gap:1.5rem;text-align:center">
+          <div><div style="font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Contratto</div><div style="font-size:1rem;font-weight:800">${eur(contrValore)}</div></div>
+          <div><div style="font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Fatturato</div><div style="font-size:1rem;font-weight:800">${eur(fatturato)}</div></div>
+          <div><div style="font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Da fatturare</div><div style="font-size:1rem;font-weight:800;color:${gap>0?'var(--blue)':'var(--teal)'}">${eur(Math.abs(gap))}</div></div>
+          <div><div style="font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Delivery</div><div style="font-size:1rem;font-weight:800">${pct}%</div></div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 320px;gap:1.2rem;align-items:start">
+        <div>
+          <div class="fs-title" style="margin-bottom:.9rem">Contratti</div>
+          ${contractsHTML}
+          <button class="btn btn-ghost btn-sm" onclick="addContratto('${c.id}')" style="margin-bottom:1.4rem">
+            ＋ Nuovo contratto / rinnovo
+          </button>
+
+          <div class="fs-title" style="margin-bottom:.9rem">Fatturato mensile</div>
+          <div class="card" style="margin-bottom:1.2rem">${billingHTML}</div>
+        </div>
+
+        <div>
+          <div class="fs-title" style="margin-bottom:.9rem">Log comunicazioni</div>
+          <div class="card">${logHTML}</div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function backToClienti(){
+  el('view-cliente-detail').classList.add('hidden'); el('view-cliente-detail').style.display='none';
+  el('view-clienti').classList.remove('hidden'); el('view-clienti').style.display='flex'; el('view-clienti').style.flexDirection='column';
+  curClienteId=null;
+}
+
+// ── STATO CLIENTE ──────────────────────────────────
+function updateClienteStato(id, stato){
+  const c = clientiData.find(x=>x.id===id);
+  if(!c) return;
+  c.stato=stato; c.updatedAt=now();
+  saveAll().then(()=>{ toast('Stato aggiornato','ok'); renderClienteDetail(c); }).catch(e=>toast(e.message,'err'));
+}
+
+// ── BILLING ────────────────────────────────────────
+function editBilling(clienteId, mese, meseLabel){
+  const c = clientiData.find(x=>x.id===clienteId);
+  if(!c) return;
+  const current = c.billing[mese]||0;
+  const val = prompt(`Fatturato per ${meseLabel} (lascia vuoto per cancellare):`, current>0?current:'');
+  if(val===null) return;
+  if(val===''){ delete c.billing[mese]; }
+  else{
+    const n=parseFloat(val.replace(/[^0-9.]/g,''));
+    if(isNaN(n)){ toast('Inserisci un numero valido','err'); return; }
+    c.billing[mese]=n;
+  }
+  c.updatedAt=now();
+  saveAll().then(()=>{ toast('Fatturato aggiornato','ok'); renderClienteDetail(c); }).catch(e=>toast(e.message,'err'));
+}
+
+// ── LOG ────────────────────────────────────────────
+function addLog(clienteId){
+  const testo = (el('new-log-text')||{value:''}).value?.trim();
+  const data  = (el('new-log-date')||{value:''}).value;
+  if(!testo){ toast('Inserisci il testo della nota','err'); return; }
+  const c = clientiData.find(x=>x.id===clienteId);
+  if(!c) return;
+  c.log = c.log||[];
+  c.log.push({id:uuid(), testo, data: data||new Date().toISOString().slice(0,10)});
+  c.updatedAt=now();
+  saveAll().then(()=>{ toast('Nota aggiunta','ok'); renderClienteDetail(c); }).catch(e=>toast(e.message,'err'));
+}
+
+function deleteLog(clienteId, logId){
+  if(!confirm('Eliminare questa nota?')) return;
+  const c = clientiData.find(x=>x.id===clienteId);
+  if(!c) return;
+  c.log = (c.log||[]).filter(l=>l.id!==logId);
+  c.updatedAt=now();
+  saveAll().then(()=>{ renderClienteDetail(c); }).catch(e=>toast(e.message,'err'));
+}
+
+// ── CONTRATTI ──────────────────────────────────────
+function addContratto(clienteId){
+  const c = clientiData.find(x=>x.id===clienteId);
+  if(!c) return;
+  const num2 = c.contratti.length+1;
+  const prev = data.find(x=>x.id===c.prevId);
+  const nuovoContr = {
+    id: uuid(),
+    num: num2,
+    dataInizio: '', dataFine: '', dataFirma: '',
+    canali: (prev?.righe||[]).filter(r=>r.canale).map(r=>({canale:r.canale, valoreContratto:0, erogato:0, note:''})),
+    noteContratto: 'Rinnovo '+(num2)
+  };
+  if(!nuovoContr.canali.length) nuovoContr.canali=[{canale:'', valoreContratto:0, erogato:0, note:''}];
+  c.contratti.push(nuovoContr);
+  c.updatedAt=now();
+  saveAll().then(()=>{ toast('Nuovo contratto aggiunto - compila i dettagli','ok'); editContratto(clienteId, nuovoContr.id); }).catch(e=>toast(e.message,'err'));
+}
+
+function editContratto(clienteId, contrattoId){
+  const c = clientiData.find(x=>x.id===clienteId);
+  const ct = c?.contratti.find(x=>x.id===contrattoId);
+  if(!c||!ct) return;
+
+  const overlay = document.createElement('div');
+  overlay.className='overlay'; overlay.id='contratto-overlay';
+  overlay.innerHTML=`
+    <div class="modal" style="max-width:700px" onclick="event.stopPropagation()">
+      <div class="modal-hdr">
+        <div><div class="modal-title">Contratto ${ct.num}</div></div>
+        <button class="btn-x" onclick="el('contratto-overlay').remove()">×</button>
+      </div>
+      <div class="fgrid" style="margin-bottom:1.2rem">
+        <div class="fg"><label>Note / Titolo</label><input type="text" id="ct-note" value="${ct.noteContratto||''}" placeholder="es. Rinnovo 2026"></div>
+        <div class="fg"><label>Data Firma</label><input type="date" id="ct-firma" value="${ct.dataFirma||''}" style="color-scheme:light"></div>
+        <div class="fg"><label>Data Inizio</label><input type="date" id="ct-inizio" value="${ct.dataInizio||''}" style="color-scheme:light"></div>
+        <div class="fg"><label>Data Fine Prevista</label><input type="date" id="ct-fine" value="${ct.dataFine||''}" style="color-scheme:light"></div>
+      </div>
+      <div class="fs-title" style="margin-bottom:.8rem">Canali e valori</div>
+      <div id="ct-canali-wrap">
+        ${ct.canali.map((ch,ci)=>`
+          <div class="fgrid" style="margin-bottom:.6rem;border:1px solid var(--b1);border-radius:8px;padding:.75rem;background:var(--s2)" id="ct-ch-${ci}">
+            <div class="fg">
+              <label>Canale</label>
+              <select class="ct-canale">
+                <option value="">— Canale —</option>
+                ${CANALI.map(cn=>`<option ${cn===ch.canale?'selected':''} value="${cn}">${cn}</option>`).join('')}
+              </select>
+            </div>
+            <div class="fg"><label>Valore Contratto (€)</label><input type="number" class="ct-valore" value="${ch.valoreContratto||''}" min="0" step="100" placeholder="0"></div>
+            <div class="fg"><label>Erogato (€)</label><input type="number" class="ct-erogato" value="${ch.erogato||''}" min="0" step="100" placeholder="0"></div>
+            <div class="fg"><label>Note</label><input type="text" class="ct-ch-note" value="${ch.note||''}" placeholder="es. 100 lead CPL"></div>
+          </div>`).join('')}
+      </div>
+      <button class="btn btn-ghost btn-sm" onclick="addCtCanale()" style="margin-bottom:1.2rem">＋ Aggiungi canale</button>
+      <div class="form-actions">
+        <button class="btn btn-ghost" onclick="el('contratto-overlay').remove()">Annulla</button>
+        <button class="btn btn-gold" onclick="saveContratto('${clienteId}','${contrattoId}')">💾 Salva contratto</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+}
+
+function addCtCanale(){
+  const wrap = el('ct-canali-wrap');
+  const ci = wrap.children.length;
+  const div = document.createElement('div');
+  div.className='fgrid'; div.style.cssText='margin-bottom:.6rem;border:1px solid var(--b1);border-radius:8px;padding:.75rem;background:var(--s2)';
+  div.id=`ct-ch-${ci}`;
+  div.innerHTML=`
+    <div class="fg"><label>Canale</label><select class="ct-canale"><option value="">— Canale —</option>${CANALI.map(cn=>`<option>${cn}</option>`).join('')}</select></div>
+    <div class="fg"><label>Valore Contratto (€)</label><input type="number" class="ct-valore" min="0" step="100" placeholder="0"></div>
+    <div class="fg"><label>Erogato (€)</label><input type="number" class="ct-erogato" min="0" step="100" placeholder="0"></div>
+    <div class="fg"><label>Note</label><input type="text" class="ct-ch-note" placeholder="es. 100 lead CPL"></div>`;
+  wrap.appendChild(div);
+}
+
+function saveContratto(clienteId, contrattoId){
+  const c = clientiData.find(x=>x.id===clienteId);
+  const ct = c?.contratti.find(x=>x.id===contrattoId);
+  if(!c||!ct) return;
+  ct.noteContratto = (el('ct-note')||{value:''}).value;
+  ct.dataFirma     = (el('ct-firma')||{value:''}).value;
+  ct.dataInizio    = (el('ct-inizio')||{value:''}).value;
+  ct.dataFine      = (el('ct-fine')||{value:''}).value;
+  const rows = document.querySelectorAll('[id^="ct-ch-"]');
+  ct.canali = [...rows].map(row=>({
+    canale:  row.querySelector('.ct-canale')?.value||'',
+    valoreContratto: num(row.querySelector('.ct-valore')?.value),
+    erogato: num(row.querySelector('.ct-erogato')?.value),
+    note:    row.querySelector('.ct-ch-note')?.value||''
+  })).filter(ch=>ch.canale);
+  c.updatedAt=now();
+  el('contratto-overlay')?.remove();
+  saveAll().then(()=>{ toast('Contratto salvato','ok'); renderClienteDetail(c); }).catch(e=>toast(e.message,'err'));
+}
+
+// ── REPORT CLIENTI ─────────────────────────────────
+function renderReportClienti(){
+  const attivi = clientiData.filter(c=>c.stato==='Attivo'||c.stato==='In Pausa');
+  const conclusi = clientiData.filter(c=>c.stato==='Concluso'||c.stato==='Rinnovato');
+
+  const totContr = clientiData.reduce((s,c)=>s+clienteTotals(c).contrValore,0);
+  const totFatt  = clientiData.reduce((s,c)=>s+clienteTotals(c).fatturato,0);
+  const totGap   = totContr-totFatt;
+
+  const today = new Date();
+  const scadenza30 = attivi.filter(c=>{
+    const ct = c.contratti.find(x=>x.dataFine);
+    if(!ct) return false;
+    const fine = new Date(ct.dataFine+'T23:59:59');
+    const diff = (fine-today)/(1000*60*60*24);
+    return diff>=0 && diff<=30;
+  });
+  const scadenza60 = attivi.filter(c=>{
+    const ct = c.contratti.find(x=>x.dataFine);
+    if(!ct) return false;
+    const fine = new Date(ct.dataFine+'T23:59:59');
+    const diff = (fine-today)/(1000*60*60*24);
+    return diff>30 && diff<=60;
+  });
+  const inRitardo = attivi.filter(c=>deliveryAlert(c));
+
+  const clienteRow = (c) => {
+    const {contrValore,fatturato,gap,pct} = clienteTotals(c);
+    return `<div class="client-rep-card" onclick="openClienteDetail('${c.id}')" style="cursor:pointer">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.85rem">
+        <div class="client-rep-name" style="margin-bottom:0">${c.nome}</div>
+        <span style="font-size:.76rem;color:var(--muted)">${c.commerciale||'—'}</span>
+      </div>
+      <div class="crep-grid">
+        <div class="crep-kpi"><div class="crep-kpi-val">${eur(contrValore)}</div><div class="crep-kpi-lbl">Contratto</div></div>
+        <div class="crep-kpi"><div class="crep-kpi-val">${eur(fatturato)}</div><div class="crep-kpi-lbl">Fatturato</div></div>
+        <div class="crep-kpi"><div class="crep-kpi-val ${gap>0?'gap-positive':'gap-negative'}">${eur(Math.abs(gap))}</div><div class="crep-kpi-lbl">${gap>0?'Da fatturare':'Extra'}</div></div>
+        <div class="crep-kpi"><div class="crep-kpi-val">${pct}%</div><div class="crep-kpi-lbl">Delivery</div></div>
+      </div>
+      ${deliveryAlert(c)?`<div class="client-alert" style="margin-top:.6rem">⚠ ${deliveryAlert(c)}</div>`:''}
+    </div>`;
+  };
+
+  const sectionTitle = (t,n,color) => `<div style="font-family:var(--display);font-size:1rem;font-weight:700;margin:1.2rem 0 .7rem;padding:.6rem 0;border-bottom:2px solid ${color};color:${color}">${t} <span style="font-size:.78rem;font-weight:400;color:var(--muted)">(${n})</span></div>`;
+
+  el('report-clienti-body').innerHTML = `
+    <!-- KPI globali -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:.85rem;margin-bottom:1.5rem">
+      <div class="kpi"><div class="kpi-val sm">${eur(totContr)}</div><div class="kpi-lbl">Valore Contratti Totali</div></div>
+      <div class="kpi"><div class="kpi-val sm">${eur(totFatt)}</div><div class="kpi-lbl">Totale Fatturato</div></div>
+      <div class="kpi"><div class="kpi-val sm">${eur(totGap)}</div><div class="kpi-lbl">Da Fatturare</div></div>
+      <div class="kpi"><div class="kpi-val">${attivi.length}</div><div class="kpi-lbl">Clienti Attivi</div><div class="kpi-sub">${conclusi.length} conclusi / rinnovati</div></div>
+    </div>
+
+    <!-- Alert -->
+    ${scadenza30.length?`<div style="background:rgba(184,32,32,.07);border:1px solid rgba(184,32,32,.2);border-radius:10px;padding:.9rem 1.2rem;margin-bottom:1rem">
+      <div style="font-weight:700;color:var(--rose);margin-bottom:.5rem">⚠ Contratti in scadenza entro 30 giorni (${scadenza30.length})</div>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap">${scadenza30.map(c=>`<span class="client-tag" style="color:var(--rose);border-color:rgba(184,32,32,.3);cursor:pointer" onclick="openClienteDetail('${c.id}')">${c.nome}</span>`).join('')}</div>
+    </div>`:''} 
+
+    ${scadenza60.length?`<div style="background:rgba(192,128,16,.07);border:1px solid rgba(192,128,16,.2);border-radius:10px;padding:.9rem 1.2rem;margin-bottom:1rem">
+      <div style="font-weight:700;color:#C08010;margin-bottom:.5rem">📅 Contratti in scadenza entro 60 giorni (${scadenza60.length})</div>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap">${scadenza60.map(c=>`<span class="client-tag" style="color:#C08010;border-color:rgba(192,128,16,.3);cursor:pointer" onclick="openClienteDetail('${c.id}')">${c.nome}</span>`).join('')}</div>
+    </div>`:''}
+
+    ${inRitardo.length?`<div style="background:rgba(30,95,204,.07);border:1px solid rgba(30,95,204,.2);border-radius:10px;padding:.9rem 1.2rem;margin-bottom:1.2rem">
+      <div style="font-weight:700;color:var(--blue);margin-bottom:.5rem">📉 Delivery in ritardo (${inRitardo.length})</div>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap">${inRitardo.map(c=>`<span class="client-tag" style="color:var(--blue);border-color:rgba(30,95,204,.3);cursor:pointer" onclick="openClienteDetail('${c.id}')">${c.nome}</span>`).join('')}</div>
+    </div>`:''}
+
+    <!-- Attivi -->
+    ${attivi.length?sectionTitle('Clienti Attivi',attivi.length,'#0D7A70')+attivi.map(clienteRow).join(''):'<div class="rep-empty">Nessun cliente attivo.</div>'}
+
+    <!-- Conclusi -->
+    ${conclusi.length?sectionTitle('Conclusi / Rinnovati',conclusi.length,'var(--muted)')+conclusi.map(clienteRow).join(''):''}
+  `;
+}
+
+// ── Hook: bottone "Crea scheda cliente" nel modal preventivo ───────────────
+// Aggiunto nel openDetail — se stato === Acquisito e non ha ancora cliente
+const _openDetail_orig = openDetail;
+function openDetail(id){
+  _openDetail_orig(id);
+  const d = data.find(x=>x.id===id);
+  if(!d) return;
+  if(d.stato==='Acquisito'){
+    const exists = clientiData.find(c=>c.prevId===id);
+    const foot = el('modal-foot');
+    if(foot && !foot.querySelector('.btn-crm')){
+      const btn = document.createElement('button');
+      btn.className='btn btn-ghost btn-sm btn-crm';
+      btn.style.cssText='color:var(--blue);border-color:rgba(30,95,204,.3)';
+      btn.textContent = exists ? '👥 Vai alla scheda cliente' : '👥 Crea scheda cliente';
+      btn.onclick = () => {
+        hide('det-overlay');
+        if(exists) openClienteDetail(exists.id);
+        else creaClienteDaPreventivo(d);
+      };
+      foot.insertBefore(btn, foot.firstChild);
+    }
+  }
+}
+
+
 // ══════════════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════════════
@@ -1534,9 +2228,16 @@ async function init(){
 }
 document.addEventListener('DOMContentLoaded',()=>{
   addRiga();
-  // MSAL status check
   const statusEl=document.getElementById('msal-status');
-  if(statusEl){let c=0;const t=setInterval(()=>{c++;if(typeof window.msal!=='undefined'){clearInterval(t);statusEl.textContent=''}else if(c>20){clearInterval(t);if(statusEl)statusEl.innerHTML='<span style="color:var(--rose)">⚠ Libreria Microsoft non caricata. Controlla la connessione e ricarica la pagina.</span>'}else statusEl.textContent='Caricamento libreria Microsoft...'},500)}
+  if(statusEl){
+    let cnt=0;
+    const tmr=setInterval(()=>{
+      cnt++;
+      if(typeof window.msal!=='undefined'){clearInterval(tmr);statusEl.textContent='';}
+      else if(cnt>20){clearInterval(tmr);statusEl.innerHTML='<span style="color:var(--rose)">Libreria Microsoft non caricata. Ricarica la pagina.</span>';}
+      else{statusEl.textContent='Caricamento libreria Microsoft...';}
+    },500);
+  }
 });
 init();
 </script>
