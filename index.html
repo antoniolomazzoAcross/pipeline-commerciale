@@ -1004,24 +1004,33 @@ async function graphErrorText(r){
 async function getRef(){
   if(fileRef)return fileRef;
   const t=await tok();
-  let lastStatus='',lastMsg='';
-  for(const candidate of shareUrlCandidates(SHARE_URL)){
-    const r=await fetch(`${GRAPH}/shares/${encShare(candidate)}/driveItem`,{
-      headers:{Authorization:`Bearer ${t}`,Prefer:'redeemSharingLink'}
-    });
-    if(r.ok){
-      const item=await r.json();
-      const remote=item.remoteItem||{};
-      const driveId=remote.parentReference?.driveId||item.parentReference?.driveId;
-      const itemId=remote.id||item.id;
-      if(!driveId||!itemId)throw new Error('File raggiunto, ma impossibile ricavare driveId/itemId. Rigenera il link OneDrive.');
-      fileRef={driveId,itemId};
-      return fileRef;
+  // Prova prima con il link di condivisione
+  if(SHARE_URL){
+    let lastStatus='',lastMsg='';
+    for(const candidate of shareUrlCandidates(SHARE_URL)){
+      const r=await fetch(`${GRAPH}/shares/${encShare(candidate)}/driveItem`,{
+        headers:{Authorization:`Bearer ${t}`,Prefer:'redeemSharingLink'}
+      });
+      if(r.ok){
+        const item=await r.json();
+        const remote=item.remoteItem||{};
+        const driveId=remote.parentReference?.driveId||item.parentReference?.driveId;
+        const itemId=remote.id||item.id;
+        if(driveId&&itemId){fileRef={driveId,itemId};return fileRef;}
+      }
+      lastStatus=r.status;
+      lastMsg=await graphErrorText(r);
     }
-    lastStatus=r.status;
-    lastMsg=await graphErrorText(r);
   }
-  throw new Error(`File condiviso non raggiungibile (${lastStatus}). Controlla che il file OneDrive sia condiviso con questo utente e che il link salvato sia quello corretto.${lastMsg?' Dettaglio: '+lastMsg:''}`);
+  // Fallback: cerca tra i file condivisi con l'utente
+  const r2=await fetch(`${GRAPH}/me/drive/sharedWithMe`,{headers:{Authorization:`Bearer ${t}`}});
+  if(!r2.ok)throw new Error('Accesso negato ('+r2.status+'). Assicurati di essere loggato con il tuo account Ediscom Spa.');
+  const shared=await r2.json();
+  const found=(shared.value||[]).find(f=>(f.name||f.remoteItem?.name)==='pipeline_trattative.json');
+  if(!found)throw new Error('File non trovato nei file condivisi. Chiedi ad Antonio di condividertelo direttamente su OneDrive con la tua email.');
+  const ri=found.remoteItem||found;
+  fileRef={driveId:ri.parentReference?.driveId,itemId:ri.id};
+  return fileRef;
 }
 async function readFile(){
   const t=await tok();
