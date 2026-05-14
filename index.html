@@ -732,7 +732,7 @@ table.q-tbl tr.tot-row td{background:var(--s2);font-weight:700;color:var(--gold2
       <button class="btn-x" onclick="hide('det-overlay')">×</button>
     </div>
     <div id="m-body"></div>
-    <div class="modal-foot">
+    <div class="modal-foot" id="modal-foot">
       <button class="btn btn-danger btn-sm" id="m-del">🗑 Elimina</button>
       <button class="btn btn-ghost btn-sm" id="m-edit">✏️ Modifica</button>
       <button class="btn btn-gold btn-sm" onclick="hide('det-overlay')">Chiudi</button>
@@ -976,9 +976,67 @@ async function tok(){try{return(await msalApp.acquireTokenSilent({scopes:SCOPES,
 // GRAPH
 // ══════════════════════════════════════════════════
 function encShare(url){return 'u!'+btoa(url).replace(/=/g,'').replace(/\//g,'_').replace(/\+/g,'-')}
-async function getRef(){if(fileRef)return fileRef;const t=await tok();const r=await fetch(`${GRAPH}/shares/${encShare(SHARE_URL)}/driveItem`,{headers:{Authorization:`Bearer ${t}`}});if(!r.ok)throw new Error('File condiviso non raggiungibile.');const item=await r.json();fileRef={driveId:item.parentReference?.driveId||item.remoteItem?.parentReference?.driveId,itemId:item.id};return fileRef}
-async function readFile(){const t=await tok();const ref=await getRef();const r=await fetch(`${GRAPH}/drives/${ref.driveId}/items/${ref.itemId}/content`,{headers:{Authorization:`Bearer ${t}`}});if(r.status===404)return[];if(!r.ok)throw new Error('Errore lettura: '+r.status);try{return JSON.parse(await r.text())}catch{return[]}}
-async function writeFile(d){const t=await tok();const ref=await getRef();const r=await fetch(`${GRAPH}/drives/${ref.driveId}/items/${ref.itemId}/content`,{method:'PUT',headers:{Authorization:`Bearer ${t}`,'Content-Type':'application/json'},body:JSON.stringify(d,null,2)});if(!r.ok)throw new Error('Errore salvataggio: '+r.status)}
+function shareUrlCandidates(url){
+  const raw=(url||'').trim();
+  const out=[];
+  const add=u=>{if(u&&!out.includes(u))out.push(u)};
+  add(raw);
+  try{
+    const u=new URL(raw);
+    u.hash='';
+    add(u.toString());
+    if(u.search){
+      const u2=new URL(u.toString());
+      u2.search='';
+      add(u2.toString());
+    }
+  }catch{}
+  return out;
+}
+async function graphErrorText(r){
+  try{
+    const j=await r.clone().json();
+    return j?.error?.message||JSON.stringify(j);
+  }catch{
+    try{return await r.clone().text()}catch{return ''}
+  }
+}
+async function getRef(){
+  if(fileRef)return fileRef;
+  const t=await tok();
+  let lastStatus='',lastMsg='';
+  for(const candidate of shareUrlCandidates(SHARE_URL)){
+    const r=await fetch(`${GRAPH}/shares/${encShare(candidate)}/driveItem`,{
+      headers:{Authorization:`Bearer ${t}`,Prefer:'redeemSharingLink'}
+    });
+    if(r.ok){
+      const item=await r.json();
+      const remote=item.remoteItem||{};
+      const driveId=remote.parentReference?.driveId||item.parentReference?.driveId;
+      const itemId=remote.id||item.id;
+      if(!driveId||!itemId)throw new Error('File raggiunto, ma impossibile ricavare driveId/itemId. Rigenera il link OneDrive.');
+      fileRef={driveId,itemId};
+      return fileRef;
+    }
+    lastStatus=r.status;
+    lastMsg=await graphErrorText(r);
+  }
+  throw new Error(`File condiviso non raggiungibile (${lastStatus}). Controlla che il file OneDrive sia condiviso con questo utente e che il link salvato sia quello corretto.${lastMsg?' Dettaglio: '+lastMsg:''}`);
+}
+async function readFile(){
+  const t=await tok();
+  const ref=await getRef();
+  const r=await fetch(`${GRAPH}/drives/${ref.driveId}/items/${ref.itemId}/content`,{headers:{Authorization:`Bearer ${t}`}});
+  if(r.status===404)return[];
+  if(!r.ok)throw new Error('Errore lettura: '+r.status+' '+(await graphErrorText(r)));
+  try{return JSON.parse(await r.text())}catch{return[]}
+}
+async function writeFile(d){
+  const t=await tok();
+  const ref=await getRef();
+  const r=await fetch(`${GRAPH}/drives/${ref.driveId}/items/${ref.itemId}/content`,{method:'PUT',headers:{Authorization:`Bearer ${t}`,'Content-Type':'application/json'},body:JSON.stringify(d,null,2)});
+  if(!r.ok)throw new Error('Errore salvataggio: '+r.status+' '+(await graphErrorText(r)));
+}
 
 // ══════════════════════════════════════════════════
 // DATI
@@ -1100,6 +1158,7 @@ const COLS=[
   {k:'dataUltimoFeedback',l:'Ult.Feedback',f:'text',w:'82px'},
   {k:'timing',l:'Timing',f:'text',w:'85px'},
   {k:'noteVarie',l:'Note',f:'text',w:'120px'},
+  {k:'settimana',l:'Sett.',f:'text',w:'70px'},
 ];
 
 // Espandi i dati: una riga per canale, con dati prospect solo sulla prima riga
@@ -1667,8 +1726,13 @@ async function loadData(){
   }
 }
 
+function payloadToSave(){
+  // Mantiene compatibilità con la vecchia app: se non ci sono schede clienti, salva ancora il JSON come array.
+  // Quando verranno create schede clienti, passerà automaticamente al formato {preventivi, clienti}.
+  return (clientiData&&clientiData.length) ? {preventivi:data, clienti:clientiData} : data;
+}
 async function saveAll(){
-  await writeFile({preventivi: data, clienti: clientiData});
+  await writeFile(payloadToSave());
 }
 
 // Override saveRecord to use new format
