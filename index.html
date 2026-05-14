@@ -963,7 +963,7 @@ function initMsal(){
   if(!CID)return false;
   const redirectUri=window.location.origin+window.location.pathname;
   msalApp=new window.msal.PublicClientApplication({
-    auth:{clientId:CID,authority:'https://login.microsoftonline.com/common',redirectUri},
+    auth:{clientId:CID,authority:'https://login.microsoftonline.com/d1dfd141-acbb-40d8-ae90-f9e4a710c318',redirectUri},
     cache:{cacheLocation:'localStorage',storeAuthStateInCookie:false}
   });
   return true;
